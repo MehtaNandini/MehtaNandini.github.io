@@ -25,6 +25,8 @@ test("exports a complete portfolio page", async () => {
   assert.doesNotMatch(html, /Have a complex problem|Let's map it out|OPEN CHANNEL/);
   assert.doesNotMatch(html, /scene-dots|Project roadmap stations/);
   assert.match(html, /LinkedIn/);
+  assert.match(html, /href="tel:\+4917634668019"/);
+  assert.match(html, /href="mailto:nandimehta2204@gmail\.com"/);
   assert.match(html, /Return to origin/);
   assert.doesNotMatch(html, /codex-preview|SkeletonPreview|react-loading-skeleton/);
 });

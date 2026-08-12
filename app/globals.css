@@ -693,7 +693,7 @@ button:focus-visible,
 .footer-secondary { display: flex; justify-content: space-between; gap: 2rem; align-items: center; }
 .footer-primary { min-height: 6.5rem; color: var(--paper); }
 .footer-primary > p { color: var(--signal); letter-spacing: 0.08em; text-transform: uppercase; }
-.footer-links { display: flex; gap: clamp(1.5rem, 4vw, 3.5rem); }
+.footer-links { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: clamp(1.5rem, 4vw, 3.5rem); }
 .footer-links a,
 .footer-secondary a { transition: color 160ms ease; }
 .footer-links a:hover,

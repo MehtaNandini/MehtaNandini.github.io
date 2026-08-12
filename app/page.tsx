@@ -106,6 +106,8 @@ export default function Home() {
         <div className="footer-primary">
           <p>Software Engineer</p>
           <div className="footer-links">
+            <a href="tel:+4917634668019">Mobile: +49 17634668019</a>
+            <a href="mailto:nandimehta2204@gmail.com">Email: nandimehta2204@gmail.com</a>
             <a href="https://www.linkedin.com/in/mehtanandini" target="_blank" rel="noreferrer">LinkedIn ↗</a>
             <a href="https://github.com/mehtanandini" target="_blank" rel="noreferrer">GitHub ↗</a>
             <a href="./Nandini_Mehta_CV.pdf" download>Full CV ↓</a>
