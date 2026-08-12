@@ -394,9 +394,6 @@ export function ThreeRoadmap() {
             Nandini
             <em>Mehta.</em>
           </h1>
-          <p className="hero-copy">
-            I design software that transforms complex information into clear, connected, and dependable systems.
-          </p>
           <div className="hero-actions">
             <a className="primary-action" href="#roadmap">Enter project roadmap <span aria-hidden="true">↓</span></a>
             <a className="text-action" href="./Nandini_Mehta_CV.pdf" download>Download full CV ↗</a>
