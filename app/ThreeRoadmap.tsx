@@ -1,57 +1,83 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import * as THREE from "three";
-
-const projects = [
-  {
-    phase: "Ingest",
-    title: "Document Classification & Structured Extraction",
-    statement: "Turn unstructured documents into records a system can trust.",
-    description:
-      "A modular document pipeline that moves through OCR, classification, information extraction, and validation—separating each stage so it can be tested, replaced, and scaled independently.",
-    input: "Unstructured files",
-    output: "Validated records",
-    stack: ["Python", "NLP", "Transformers", "OCR", "ETL"],
-  },
-  {
-    phase: "Retrieve",
-    title: "RAG-Based LLM Data Pipeline",
-    statement: "Make technical knowledge retrievable, traceable, and grounded.",
-    description:
-      "A retrieval pipeline for scientific content, connecting chunking, metadata, vector search, source grounding, and structured validation into one observable flow.",
-    input: "Technical knowledge",
-    output: "Grounded answers",
-    stack: ["Python", "RAG", "Vector DB", "Metadata", "LLM"],
-  },
-  {
-    phase: "Connect",
-    title: "Manufacturing Data Integration & Semantic Search",
-    statement: "Connect machines, processes, observations, and meaning.",
-    description:
-      "A manufacturing knowledge graph that links heterogeneous technical sources through semantic models, mapping, SPARQL queries, and search designed for downstream machine learning.",
-    input: "Heterogeneous signals",
-    output: "Connected context",
-    stack: ["Python", "RDF", "OWL", "SPARQL", "QUDT"],
-  },
-  {
-    phase: "Orchestrate",
-    title: "Workflow Automation with LangGraph",
-    statement: "Coordinate tools and state without losing control of the result.",
-    description:
-      "A multi-step workflow system that manages state, routes tool calls, repeats reliable tasks, and validates structured outputs for research and enterprise use cases.",
-    input: "Complex task state",
-    output: "Validated execution",
-    stack: ["Python", "LangGraph", "Tools", "State", "Validation"],
-  },
-] as const;
+import { ProjectChapterCard, ProjectDetailDialog } from "./ProjectDetails";
+import { projects } from "./projectData";
 
 const nodePositions = [
-  new THREE.Vector3(1.15, 1.75, 0.2),
-  new THREE.Vector3(3.25, -1.25, 0.8),
-  new THREE.Vector3(1.7, 1.05, -0.2),
-  new THREE.Vector3(3.9, -1.45, 0.45),
+  new THREE.Vector3(1.3, 2.95, 0.15),
+  new THREE.Vector3(3.35, 1.72, -0.35),
+  new THREE.Vector3(1.45, 0.5, 0.05),
+  new THREE.Vector3(3.5, -0.72, 0.4),
+  new THREE.Vector3(1.3, -1.94, -0.2),
+  new THREE.Vector3(3.6, -3.16, 0.15),
 ];
+
+function createProjectTexture(project: (typeof projects)[number], index: number) {
+  const surface = document.createElement("canvas");
+  surface.width = 1024;
+  surface.height = 640;
+  const context = surface.getContext("2d");
+  if (!context) throw new Error("Canvas 2D context is unavailable");
+
+  context.fillStyle = "#0b1712";
+  context.fillRect(0, 0, surface.width, surface.height);
+
+  context.fillStyle = "#caff46";
+  context.fillRect(0, 0, surface.width, 8);
+  context.font = "600 38px monospace";
+  context.fillText(String(index + 1).padStart(2, "0"), 64, 82);
+
+  context.fillStyle = "#91a39a";
+  context.textAlign = "right";
+  context.font = "600 28px monospace";
+  context.fillText(project.phase.toUpperCase(), 960, 78);
+  context.textAlign = "left";
+
+  const words = project.shortTitle.split(" ");
+  const lines: string[] = [];
+  let line = "";
+  context.font = "600 68px Arial";
+  words.forEach((word) => {
+    const candidate = line ? `${line} ${word}` : word;
+    if (context.measureText(candidate).width > 860 && line) {
+      lines.push(line);
+      line = word;
+    } else {
+      line = candidate;
+    }
+  });
+  if (line) lines.push(line);
+
+  context.fillStyle = "#e9f0eb";
+  lines.slice(0, 3).forEach((text, lineIndex) => {
+    context.fillText(text, 64, 210 + lineIndex * 72);
+  });
+
+  context.strokeStyle = "rgba(233, 240, 235, 0.25)";
+  context.beginPath();
+  context.moveTo(64, 470);
+  context.lineTo(960, 470);
+  context.stroke();
+
+  context.fillStyle = "#91a39a";
+  context.font = "500 24px monospace";
+  context.fillText("INPUT", 64, 522);
+  context.fillText("OUTPUT", 620, 522);
+  context.fillStyle = "#e9f0eb";
+  context.font = "600 28px Arial";
+  context.fillText(project.input, 64, 568);
+  context.fillText(project.output, 620, 568);
+  context.fillStyle = "#ff9f43";
+  context.font = "600 34px Arial";
+  context.fillText("→", 510, 565);
+
+  const texture = new THREE.CanvasTexture(surface);
+  texture.colorSpace = THREE.SRGBColorSpace;
+  texture.needsUpdate = true;
+  return texture;
+}
 
 export function ThreeRoadmap() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -59,6 +85,30 @@ export function ThreeRoadmap() {
   const chapterRefs = useRef<Array<HTMLElement | null>>([]);
   const activeRef = useRef(0);
   const [active, setActive] = useState(0);
+  const [focusedProject, setFocusedProject] = useState<number | null>(null);
+  const [selectedProject, setSelectedProject] = useState<number | null>(null);
+  const closeProject = useCallback(() => setSelectedProject(null), []);
+
+  const focusProjectCard = useCallback((projectIndex: number, behavior: ScrollBehavior = "smooth") => {
+    const target = chapterRefs.current[projectIndex];
+    if (!target) return;
+
+    activeRef.current = projectIndex;
+    setActive(projectIndex);
+    setFocusedProject(projectIndex);
+    target.querySelector<HTMLElement>(".chapter-card")?.focus({ preventScroll: true });
+    target.scrollIntoView({ behavior, block: "center", inline: "nearest" });
+    window.history.replaceState(null, "", `#project-${projectIndex + 1}`);
+  }, []);
+
+  useEffect(() => {
+    const match = window.location.hash.match(/^#project-(\d+)$/);
+    const projectIndex = match ? Number(match[1]) - 1 : -1;
+    if (projectIndex < 0 || projectIndex >= projects.length) return;
+
+    const frame = window.requestAnimationFrame(() => focusProjectCard(projectIndex, "auto"));
+    return () => window.cancelAnimationFrame(frame);
+  }, [focusProjectCard]);
 
   useEffect(() => {
     const chapters = chapterRefs.current.filter(Boolean) as HTMLElement[];
@@ -109,106 +159,143 @@ export function ThreeRoadmap() {
     scene.fog = new THREE.FogExp2(0x07100d, 0.055);
 
     const camera = new THREE.PerspectiveCamera(42, 1, 0.1, 100);
-    camera.position.set(0, 0, compact ? 11 : 8.7);
+    camera.position.set(0, 0, compact ? 13.3 : 10.2);
 
     const world = new THREE.Group();
     world.rotation.set(-0.05, -0.16, -0.04);
-    world.scale.setScalar(compact ? 0.82 : 0.9);
+    world.scale.setScalar(compact ? 0.58 : 0.68);
     scene.add(world);
 
-    const curve = new THREE.CatmullRomCurve3(nodePositions, false, "catmullrom", 0.4);
-    const routeGeometry = new THREE.TubeGeometry(curve, 160, compact ? 0.025 : 0.035, 8, false);
-    const routeMaterial = new THREE.MeshBasicMaterial({ color: 0xcaff46 });
-    const route = new THREE.Mesh(routeGeometry, routeMaterial);
-    world.add(route);
-
-    const shadowCurve = curve.getPoints(160);
-    const shadowGeometry = new THREE.BufferGeometry().setFromPoints(shadowCurve);
-    const shadowMaterial = new THREE.LineBasicMaterial({ color: 0x375044, transparent: true, opacity: 0.65 });
-    const shadowRoute = new THREE.Line(shadowGeometry, shadowMaterial);
-    shadowRoute.position.z = -0.16;
-    world.add(shadowRoute);
-
-    const nodeGeometry = new THREE.IcosahedronGeometry(compact ? 0.18 : 0.24, 2);
-    const ringGeometry = new THREE.TorusGeometry(compact ? 0.42 : 0.52, 0.012, 8, 96);
-    const nodes: Array<{ core: THREE.Mesh; ring: THREE.Mesh; material: THREE.MeshStandardMaterial }> = [];
+    const cardWidth = compact ? 2.05 : 2.4;
+    const cardHeight = compact ? 1.28 : 1.5;
+    const cardGeometry = new THREE.PlaneGeometry(cardWidth, cardHeight);
+    const cardHitGeometry = new THREE.PlaneGeometry(cardWidth + 0.38, cardHeight + 0.3);
+    const cardFrameGeometry = new THREE.EdgesGeometry(cardGeometry);
+    const cardBackGeometry = new THREE.BoxGeometry(cardWidth, cardHeight, 0.06);
+    const portGeometry = new THREE.BoxGeometry(0.11, 0.11, 0.08);
+    const cardHitMaterial = new THREE.MeshBasicMaterial({
+      transparent: true,
+      opacity: 0,
+      side: THREE.DoubleSide,
+      depthWrite: false,
+    });
+    const cardRotations = [
+      new THREE.Euler(-0.04, -0.18, -0.035),
+      new THREE.Euler(0.04, 0.16, 0.045),
+      new THREE.Euler(-0.03, -0.13, -0.025),
+      new THREE.Euler(0.035, 0.12, 0.035),
+      new THREE.Euler(-0.025, -0.15, -0.03),
+      new THREE.Euler(0.03, 0.14, 0.03),
+    ];
+    const cardFaces: THREE.Mesh[] = [];
+    const cards: Array<{
+      group: THREE.Group;
+      material: THREE.MeshBasicMaterial;
+      frameMaterial: THREE.LineBasicMaterial;
+      backMaterial: THREE.MeshBasicMaterial;
+      portMaterial: THREE.MeshBasicMaterial;
+      texture: THREE.CanvasTexture;
+      basePosition: THREE.Vector3;
+      baseRotation: THREE.Euler;
+    }> = [];
 
     nodePositions.forEach((position, index) => {
       const group = new THREE.Group();
       group.position.copy(position);
+      group.rotation.copy(cardRotations[index]);
 
-      const material = new THREE.MeshStandardMaterial({
-        color: index === 0 ? 0xffa14d : 0xcaff46,
-        roughness: 0.3,
-        metalness: 0.2,
-        emissive: index === 0 ? 0x7b3512 : 0x263d0b,
-        emissiveIntensity: index === 0 ? 1.2 : 0.35,
-      });
-      const core = new THREE.Mesh(nodeGeometry, material);
-      const ringMaterial = new THREE.MeshBasicMaterial({
-        color: index === 0 ? 0xffa14d : 0x6d897a,
+      const texture = createProjectTexture(projects[index], index);
+      texture.anisotropy = renderer.capabilities.getMaxAnisotropy();
+      const material = new THREE.MeshBasicMaterial({
+        map: texture,
         transparent: true,
-        opacity: index === 0 ? 0.9 : 0.36,
+        opacity: index === 0 ? 1 : 0.58,
+        side: THREE.DoubleSide,
       });
-      const ring = new THREE.Mesh(ringGeometry, ringMaterial);
-      ring.rotation.x = Math.PI / 2.5;
-      ring.rotation.y = index * 0.52;
-      group.add(core, ring);
+      const face = new THREE.Mesh(cardGeometry, material);
+      face.position.z = 0.045;
+      face.userData.projectIndex = index;
 
-      const axisGeometry = new THREE.BufferGeometry().setFromPoints([
-        new THREE.Vector3(0, -1.4, 0),
-        new THREE.Vector3(0, 1.4, 0),
-      ]);
-      const axis = new THREE.Line(
-        axisGeometry,
-        new THREE.LineBasicMaterial({ color: 0x2b4036, transparent: true, opacity: 0.38 }),
-      );
-      group.add(axis);
+      const hitArea = new THREE.Mesh(cardHitGeometry, cardHitMaterial);
+      hitArea.position.z = 0.09;
+      hitArea.userData.projectIndex = index;
+      cardFaces.push(hitArea);
+
+      const frameMaterial = new THREE.LineBasicMaterial({
+        color: 0xcaff46,
+        transparent: true,
+        opacity: index === 0 ? 0.95 : 0.28,
+      });
+      const frame = new THREE.LineSegments(cardFrameGeometry, frameMaterial);
+      frame.position.z = 0.075;
+
+      const backMaterial = new THREE.MeshBasicMaterial({
+        color: 0x07100d,
+        transparent: true,
+        opacity: 0.9,
+      });
+      const backing = new THREE.Mesh(cardBackGeometry, backMaterial);
+
+      const portMaterial = new THREE.MeshBasicMaterial({
+        color: index === 0 ? 0xff9f43 : 0xcaff46,
+        transparent: true,
+        opacity: index === 0 ? 1 : 0.6,
+      });
+      const inputPort = new THREE.Mesh(portGeometry, portMaterial);
+      inputPort.position.set(-cardWidth / 2 - 0.055, 0, 0.08);
+      const outputPort = new THREE.Mesh(portGeometry, portMaterial);
+      outputPort.position.set(cardWidth / 2 + 0.055, 0, 0.08);
+
+      group.add(backing, face, frame, inputPort, outputPort, hitArea);
       world.add(group);
-      nodes.push({ core, ring, material });
+      cards.push({
+        group,
+        material,
+        frameMaterial,
+        backMaterial,
+        portMaterial,
+        texture,
+        basePosition: position.clone(),
+        baseRotation: cardRotations[index].clone(),
+      });
     });
-
-    const signalGeometry = new THREE.SphereGeometry(compact ? 0.045 : 0.065, 12, 12);
-    const signalMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff });
-    const signals = [0, 0.27, 0.54].map((offset) => {
-      const signal = new THREE.Mesh(signalGeometry, signalMaterial);
-      signal.userData.offset = offset;
-      world.add(signal);
-      return signal;
-    });
-
-    const particleCount = compact ? 170 : 420;
-    const particlePositions = new Float32Array(particleCount * 3);
-    for (let index = 0; index < particleCount; index += 1) {
-      particlePositions[index * 3] = (Math.random() - 0.5) * 16;
-      particlePositions[index * 3 + 1] = (Math.random() - 0.5) * 10;
-      particlePositions[index * 3 + 2] = (Math.random() - 0.5) * 8 - 1;
-    }
-    const particlesGeometry = new THREE.BufferGeometry();
-    particlesGeometry.setAttribute("position", new THREE.BufferAttribute(particlePositions, 3));
-    const particlesMaterial = new THREE.PointsMaterial({
-      color: 0x9fb8aa,
-      size: compact ? 0.018 : 0.024,
-      transparent: true,
-      opacity: 0.55,
-      sizeAttenuation: true,
-    });
-    const particles = new THREE.Points(particlesGeometry, particlesMaterial);
-    scene.add(particles);
-
-    scene.add(new THREE.AmbientLight(0xc7ddd1, 1.1));
-    const keyLight = new THREE.PointLight(0xcaff46, 22, 15);
-    keyLight.position.set(1, 3, 5);
-    scene.add(keyLight);
-    const warmLight = new THREE.PointLight(0xff9f43, 16, 11);
-    warmLight.position.set(-4, -2, 4);
-    scene.add(warmLight);
 
     let pointerX = 0;
     let pointerY = 0;
+    let hoveredProject: number | null = null;
+    const raycaster = new THREE.Raycaster();
+    const pointer = new THREE.Vector2();
+
+    const projectAtPointer = (event: PointerEvent) => {
+      const bounds = canvas.getBoundingClientRect();
+      pointer.set(
+        ((event.clientX - bounds.left) / bounds.width) * 2 - 1,
+        -((event.clientY - bounds.top) / bounds.height) * 2 + 1,
+      );
+      raycaster.setFromCamera(pointer, camera);
+      const intersection = raycaster.intersectObjects(cardFaces, false)[0];
+      return typeof intersection?.object.userData.projectIndex === "number"
+        ? Number(intersection.object.userData.projectIndex)
+        : null;
+    };
+
     const onPointerMove = (event: PointerEvent) => {
       pointerX = event.clientX / window.innerWidth - 0.5;
       pointerY = event.clientY / window.innerHeight - 0.5;
+    };
+    const onCanvasPointerMove = (event: PointerEvent) => {
+      hoveredProject = projectAtPointer(event);
+      canvas.style.cursor = hoveredProject === null ? "default" : "pointer";
+    };
+    const onCanvasPointerLeave = () => {
+      hoveredProject = null;
+      canvas.style.cursor = "default";
+    };
+    const onCanvasClick = (event: PointerEvent) => {
+      const projectIndex = projectAtPointer(event);
+      if (projectIndex === null) return;
+
+      focusProjectCard(projectIndex, reduceMotion ? "auto" : "smooth");
     };
 
     const resize = () => {
@@ -221,6 +308,9 @@ export function ThreeRoadmap() {
     const resizeObserver = new ResizeObserver(resize);
     resizeObserver.observe(container);
     window.addEventListener("pointermove", onPointerMove, { passive: true });
+    canvas.addEventListener("pointermove", onCanvasPointerMove, { passive: true });
+    canvas.addEventListener("pointerleave", onCanvasPointerLeave);
+    canvas.addEventListener("click", onCanvasClick);
     resize();
 
     const timer = new THREE.Timer();
@@ -233,33 +323,23 @@ export function ThreeRoadmap() {
 
       world.rotation.y += ((compact ? -0.05 : -0.12) + pointerX * 0.12 - world.rotation.y) * 0.025;
       world.rotation.x += (-pointerY * 0.08 - world.rotation.x) * 0.025;
-      world.position.x += ((compact ? -0.15 : 0.4) - nodePositions[current].x * 0.04 - world.position.x) * 0.018;
+      world.position.x += ((compact ? -0.05 : 0.28) - nodePositions[current].x * 0.025 - world.position.x) * 0.018;
       world.position.y += (-nodePositions[current].y * 0.05 - world.position.y) * 0.018;
-      particles.rotation.y = elapsed * 0.012;
-
-      nodes.forEach(({ core, ring, material }, index) => {
+      cards.forEach(({ group, material, frameMaterial, portMaterial, basePosition, baseRotation }, index) => {
         const selected = index === current;
-        const targetScale = selected ? 1.65 : 1;
-        core.scale.lerp(new THREE.Vector3(targetScale, targetScale, targetScale), 0.08);
-        core.rotation.x += 0.006 + index * 0.001;
-        core.rotation.y += 0.009;
-        ring.rotation.z += selected ? 0.012 : 0.003;
-        ring.scale.lerp(
-          new THREE.Vector3(selected ? 1.28 : 1, selected ? 1.28 : 1, selected ? 1.28 : 1),
-          0.06,
-        );
-        material.emissiveIntensity += ((selected ? 1.25 : 0.3) - material.emissiveIntensity) * 0.08;
-        (ring.material as THREE.MeshBasicMaterial).opacity +=
-          ((selected ? 0.92 : 0.32) - (ring.material as THREE.MeshBasicMaterial).opacity) * 0.08;
-      });
-
-      signals.forEach((signal) => {
-        const rawProgress = elapsed * 0.075 + Number(signal.userData.offset ?? 0);
-        const wrappedProgress = ((rawProgress % 1) + 1) % 1;
-        const progress = Number.isFinite(wrappedProgress)
-          ? Math.min(0.999999, Math.max(0, wrappedProgress))
-          : 0;
-        signal.position.copy(curve.getPoint(progress));
+        const hovered = index === hoveredProject;
+        const targetScale = hovered ? (selected ? 1.2 : 1.08) : selected ? 1.12 : 0.9;
+        group.scale.lerp(new THREE.Vector3(targetScale, targetScale, targetScale), 0.07);
+        group.position.y = basePosition.y + Math.sin(elapsed * 0.55 + index * 1.3) * 0.045;
+        group.position.z += (basePosition.z + (hovered ? 0.28 : 0) - group.position.z) * 0.12;
+        group.rotation.x +=
+          (baseRotation.x - pointerY * 0.035 - group.rotation.x) * 0.035;
+        group.rotation.y +=
+          (baseRotation.y + pointerX * 0.05 + Math.sin(elapsed * 0.35 + index) * 0.018 + (hovered ? -0.055 : 0) - group.rotation.y) * 0.055;
+        group.rotation.z = baseRotation.z + Math.sin(elapsed * 0.42 + index) * 0.008;
+        material.opacity += ((selected || hovered ? 1 : 0.58) - material.opacity) * 0.1;
+        frameMaterial.opacity += ((selected || hovered ? 0.95 : 0.28) - frameMaterial.opacity) * 0.1;
+        portMaterial.opacity += ((selected || hovered ? 1 : 0.6) - portMaterial.opacity) * 0.1;
       });
 
       renderer.render(scene, camera);
@@ -271,54 +351,40 @@ export function ThreeRoadmap() {
     return () => {
       window.cancelAnimationFrame(frame);
       window.removeEventListener("pointermove", onPointerMove);
+      canvas.removeEventListener("pointermove", onCanvasPointerMove);
+      canvas.removeEventListener("pointerleave", onCanvasPointerLeave);
+      canvas.removeEventListener("click", onCanvasClick);
       resizeObserver.disconnect();
-      routeGeometry.dispose();
-      routeMaterial.dispose();
-      shadowGeometry.dispose();
-      shadowMaterial.dispose();
-      nodeGeometry.dispose();
-      ringGeometry.dispose();
-      signalGeometry.dispose();
-      signalMaterial.dispose();
-      particlesGeometry.dispose();
-      particlesMaterial.dispose();
+      cardGeometry.dispose();
+      cardHitGeometry.dispose();
+      cardHitMaterial.dispose();
+      cardFrameGeometry.dispose();
+      cardBackGeometry.dispose();
+      portGeometry.dispose();
       timer.dispose();
-      nodes.forEach(({ material, ring }) => {
+      cards.forEach(({ material, frameMaterial, backMaterial, portMaterial, texture }) => {
         material.dispose();
-        (ring.material as THREE.Material).dispose();
+        frameMaterial.dispose();
+        backMaterial.dispose();
+        portMaterial.dispose();
+        texture.dispose();
       });
       renderer.dispose();
     };
-  }, []);
+  }, [focusProjectCard]);
 
   return (
     <section className="roadmap-world" id="top">
       <div className="roadmap-scene" ref={sceneRef}>
         <canvas ref={canvasRef} aria-hidden="true" />
-        <div className="scene-grid" aria-hidden="true" />
         <div className="scene-hud">
-          <p>PROJECT SIGNAL</p>
-          <strong>{String(active + 1).padStart(2, "0")} / 04</strong>
+          <p>PROJECT INDEX</p>
+          <strong>{String(active + 1).padStart(2, "0")} / {String(projects.length).padStart(2, "0")}</strong>
           <span>{projects[active].phase}</span>
         </div>
       </div>
 
       <div className="roadmap-content">
-        <div className="roadmap-nav-layer">
-          <nav className="scene-dots" aria-label="Project roadmap stations">
-            {projects.map((project, index) => (
-              <a
-                key={project.phase}
-                className={index === active ? "active" : ""}
-                href={`#project-${index + 1}`}
-                aria-label={`Go to project ${index + 1}: ${project.title}`}
-                aria-current={index === active ? "step" : undefined}
-              >
-                <span>{String(index + 1).padStart(2, "0")}</span>
-              </a>
-            ))}
-          </nav>
-        </div>
         <section className="hero" aria-labelledby="hero-title">
           <div className="hero-meta">
             <span>Software Engineer</span>
@@ -338,45 +404,27 @@ export function ThreeRoadmap() {
           <div className="scroll-cue" aria-hidden="true"><span /> Scroll to navigate</div>
         </section>
 
-        <div className="roadmap-intro" id="roadmap">
-          <div className="section-label light">
-            <span>01</span>
-            <p>Project roadmap</p>
-          </div>
-          <h2>Four projects.<br />One connected trajectory.</h2>
-          <p>Each station solves a different part of the same problem: turning complexity into usable software.</p>
-        </div>
-
-        <div className="project-chapters">
+        <section className="project-chapters" id="roadmap" aria-label="Project portfolio">
           {projects.map((project, index) => (
             <article
-              className="project-chapter"
+              className={`project-chapter${focusedProject === index ? " is-focused" : ""}`}
               key={project.phase}
               id={`project-${index + 1}`}
               data-step={index}
               ref={(element) => { chapterRefs.current[index] = element; }}
             >
-              <div className="chapter-card">
-                <div className="chapter-index">
-                  <span>{String(index + 1).padStart(2, "0")}</span>
-                  <p>{project.phase}</p>
-                </div>
-                <h3>{project.title}</h3>
-                <p className="chapter-statement">{project.statement}</p>
-                <p className="chapter-description">{project.description}</p>
-                <div className="data-flow" aria-label="Project data flow">
-                  <div><span>Input</span><strong>{project.input}</strong></div>
-                  <i aria-hidden="true">→</i>
-                  <div><span>Output</span><strong>{project.output}</strong></div>
-                </div>
-                <ul className="chapter-stack" aria-label="Project technologies">
-                  {project.stack.map((technology) => <li key={technology}>{technology}</li>)}
-                </ul>
-              </div>
+              <ProjectChapterCard project={project} index={index} onOpen={setSelectedProject} />
             </article>
           ))}
-        </div>
+        </section>
       </div>
+      {selectedProject !== null && (
+        <ProjectDetailDialog
+          index={selectedProject}
+          project={projects[selectedProject]}
+          onClose={closeProject}
+        />
+      )}
     </section>
   );
 }

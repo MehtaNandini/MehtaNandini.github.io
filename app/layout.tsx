@@ -34,21 +34,21 @@ export const metadata: Metadata = {
   authors: [{ name: "Nandini Mehta" }],
   openGraph: {
     title: "Nandini Mehta | Software Engineer",
-    description: "An interactive roadmap through four connected software projects.",
+    description: "An interactive portfolio featuring six complete software and AI project case studies.",
     type: "website",
     images: [
       {
         url: "og.png",
-        width: 1731,
-        height: 909,
-        alt: "Nandini Mehta — Software Engineer — Project Roadmap",
+        width: 1536,
+        height: 1024,
+        alt: "Nandini Mehta software engineer portfolio with six interactive project cards",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Nandini Mehta | Software Engineer",
-    description: "An interactive roadmap through four connected software projects.",
+    description: "An interactive portfolio featuring six complete software and AI project case studies.",
     images: ["og.png"],
   },
   robots: { index: true, follow: true },
