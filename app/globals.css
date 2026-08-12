@@ -709,13 +709,13 @@ button:focus-visible,
 
 @media (max-width: 760px) {
   :root { --gutter: 1.15rem; }
-  .site-header { min-height: 4.4rem; }
+  .site-header { min-height: 4.4rem; padding-right: max(var(--gutter), env(safe-area-inset-right)); padding-left: max(var(--gutter), env(safe-area-inset-left)); }
   .brand > span:last-child { display: none; }
   .header-cv { min-height: 2.75rem; }
 
   .roadmap-scene canvas { opacity: 0.72; }
   .scene-hud { right: auto; bottom: 1.1rem; left: var(--gutter); }
-  .hero { min-height: 100svh; padding-top: 7rem; justify-content: flex-start; }
+  .hero { min-height: max(100svh, 42rem); padding-top: 7rem; justify-content: flex-start; }
   .hero-meta { flex-direction: column; gap: 0.55rem; align-items: flex-start; margin-top: 1.5rem; }
   .hero-meta span + span { padding-left: 0; border-left: 0; }
   .hero h1 { margin-top: 2.5rem; font-size: clamp(4.6rem, 22vw, 7rem); line-height: 0.77; }
@@ -734,7 +734,7 @@ button:focus-visible,
 
   .project-detail-layer { padding: 0; }
   .project-detail-dialog { min-height: 100svh; border: 0; }
-  .project-detail-header { align-items: flex-start; padding: 1rem var(--gutter); }
+  .project-detail-header { align-items: flex-start; gap: 1rem; padding: max(1rem, env(safe-area-inset-top)) var(--gutter) 1rem; }
   .project-detail-header > div { display: grid; gap: 0.45rem; }
   .project-detail-header p { max-width: 18rem; line-height: 1.5; }
   .project-detail-close { flex: 0 0 auto; }
@@ -761,6 +761,65 @@ button:focus-visible,
   .footer-primary,
   .footer-secondary { align-items: flex-start; flex-direction: column; gap: 1.2rem; padding: 1.5rem 0; }
   .footer-links { width: 100%; flex-wrap: wrap; justify-content: space-between; gap: 1rem; }
+}
+
+@media (max-width: 480px) {
+  :root { --gutter: 0.9rem; }
+
+  .site-header { min-height: 4rem; }
+  .brand-core { width: 2.15rem; height: 2.15rem; }
+  .header-cv { min-height: 2.4rem; gap: 0.65rem; padding: 0 0.75rem; font-size: 0.72rem; }
+
+  .scene-hud { display: none; }
+  .hero { min-height: max(100svh, 39rem); padding: 5.5rem var(--gutter) 2rem; }
+  .hero-meta { gap: 0.4rem; margin-top: 0.75rem; margin-bottom: 0; font-size: 0.66rem; }
+  .hero h1 { margin-top: 1.75rem; font-size: clamp(3.6rem, 20vw, 5.2rem); line-height: 0.8; }
+  .hero h1 em { margin-left: 0.12em; }
+  .hero-actions { gap: 0.65rem; margin-top: 1.75rem; }
+  .primary-action { min-height: 3.25rem; gap: 1rem; padding: 0 0.85rem; }
+  .text-action { font-size: 0.76rem; }
+
+  .project-chapters { gap: 0.8rem; padding: 4rem var(--gutter); }
+  .chapter-card { min-height: 18rem; padding: 1.15rem; }
+  .chapter-card h3 { margin-top: 2.75rem; font-size: clamp(1.8rem, 9vw, 2.45rem); }
+
+  .project-detail-header { min-height: 4.25rem; gap: 0.65rem; padding-right: var(--gutter); padding-left: var(--gutter); }
+  .project-detail-header > div { gap: 0.25rem; }
+  .project-detail-header span,
+  .project-detail-header p { font-size: 0.6rem; }
+  .project-detail-header p { max-width: 12rem; }
+  .project-detail-close { min-height: 2.5rem; gap: 0.4rem; padding: 0 0.65rem; font-size: 0.68rem; }
+  .project-detail-hero { padding: 2.5rem var(--gutter); }
+  .project-detail-hero h2 { font-size: clamp(2.25rem, 12vw, 3.6rem); }
+  .project-detail-statement { margin-top: 1.5rem; font-size: 1rem; }
+  .project-detail-hero > p { margin-top: 1.5rem; font-size: 0.9rem; line-height: 1.7; }
+  .project-media-block { padding: 0 var(--gutter) 2.75rem; }
+  .project-media-stage { aspect-ratio: 1 / 1; }
+  .project-media-overlay { top: 3.45rem; left: 0.45rem; max-width: calc(100% - 0.9rem); }
+  .project-media-controls { top: 0.45rem; right: 0.45rem; gap: 0.35rem; }
+  .project-media-controls button,
+  .project-open-image { width: 2.55rem; height: 2.55rem; }
+  .project-detail-sections > section { padding: 2.25rem var(--gutter); }
+  .project-technology-section { padding: 2.25rem var(--gutter) 3.25rem; }
+
+  .capabilities-section { padding: 5rem var(--gutter); }
+  .capabilities-heading { margin: 2.75rem 0; }
+  .capabilities-heading h2 { font-size: clamp(2.7rem, 14vw, 4rem); }
+  .capabilities-heading p { margin-top: 1.5rem; font-size: 0.95rem; line-height: 1.65; }
+  .capability-grid article { min-height: 11.5rem; padding: 1.2rem; }
+  .capability-grid h3 { margin-top: 2.5rem; }
+
+  .site-footer { padding-right: max(var(--gutter), env(safe-area-inset-right)); padding-left: max(var(--gutter), env(safe-area-inset-left)); }
+  .footer-primary,
+  .footer-secondary { gap: 0.8rem; padding: 1.35rem 0; }
+  .footer-links { display: grid; grid-template-columns: 1fr; gap: 0.1rem; justify-items: start; }
+  .footer-links a,
+  .footer-secondary a { display: inline-flex; min-height: 2.5rem; align-items: center; overflow-wrap: anywhere; }
+}
+
+@media (hover: none) {
+  .primary-action:hover { transform: none; box-shadow: none; }
+  .chapter-card:hover { border-color: var(--line); background: transparent; }
 }
 
 @media (prefers-reduced-motion: reduce) {
