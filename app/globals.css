@@ -261,6 +261,9 @@ button:focus-visible,
 .inquiry-form-footer button { display: inline-flex; align-items: center; gap: 1.4rem; white-space: nowrap; }
 .inquiry-form-footer button:hover,
 .inquiry-success button:hover { background: var(--warm); }
+.inquiry-form-footer button:disabled { cursor: wait; opacity: 0.65; }
+.inquiry-error { margin: 0; color: #ffb36b; font-size: 0.72rem; line-height: 1.55; }
+.inquiry-error a { color: var(--paper); text-decoration: underline; text-underline-offset: 0.2em; }
 .inquiry-success { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--line); }
 .inquiry-success strong { color: var(--signal); font-size: 1.25rem; }
 .inquiry-success p { margin: 0.75rem 0 1.5rem; color: var(--muted); line-height: 1.65; }

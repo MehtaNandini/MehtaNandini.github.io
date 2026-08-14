@@ -28,16 +28,24 @@ test("exports a complete portfolio page", async () => {
   assert.match(html, /href="tel:\+4917634668019"/);
   assert.match(html, /href="mailto:nandimehta2204@gmail\.com"/);
   assert.match(html, /Send inquiry/);
-  assert.match(html, /action="https:\/\/formsubmit\.co\/nandimehta2204@gmail\.com"/);
-  assert.match(html, /name="First name"/);
-  assert.match(html, /name="Last name"/);
+  assert.doesNotMatch(html, /formsubmit\.co/);
+  assert.match(html, /name="first_name"/);
+  assert.match(html, /name="last_name"/);
   assert.match(html, /type="email"[^>]+name="email"/);
-  assert.match(html, /name="Message"/);
-  assert.match(html, /name="_autoresponse"/);
-  assert.match(html, /Your inquiry was sent successfully/);
+  assert.match(html, /name="message"/);
   assert.match(html, /Return to origin/);
   assert.doesNotMatch(html, /Nandini_Mehta_CV|Download CV|Full CV/);
   assert.doesNotMatch(html, /codex-preview|SkeletonPreview|react-loading-skeleton/);
+});
+
+test("connects the inquiry form to EmailJS", async () => {
+  const source = await readFile(new URL("app/InquiryForm.tsx", root), "utf8");
+
+  assert.match(source, /api\.emailjs\.com\/api\/v1\.0\/email\/send/);
+  assert.match(source, /service_t2csn5s/);
+  assert.match(source, /template_39i6qtd/);
+  assert.match(source, /Your inquiry was sent successfully/);
+  assert.doesNotMatch(source, /formsubmit\.co/);
 });
 
 test("ships portfolio assets and the GitHub Pages workflow", async () => {

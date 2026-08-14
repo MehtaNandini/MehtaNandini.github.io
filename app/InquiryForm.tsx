@@ -1,8 +1,13 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState, type FormEvent } from "react";
 
-const inquiryEndpoint = "https://formsubmit.co/nandimehta2204@gmail.com";
+const emailJsConfig = {
+  endpoint: "https://api.emailjs.com/api/v1.0/email/send",
+  serviceId: "service_t2csn5s",
+  templateId: "template_39i6qtd",
+  publicKey: "WwjyfS1fz1MGa4szl",
+};
 const confirmationMessage =
   "Thank you for your message. Your inquiry was sent successfully. I will contact you as soon as possible.";
 const namePattern = "[A-Za-zÀ-ÖØ-öø-ÿĀ-ž'\\- ]{2,50}";
@@ -12,28 +17,69 @@ const removeInvalidNameCharacters = (value: string) =>
 
 export function InquiryForm() {
   const dialogRef = useRef<HTMLDialogElement>(null);
+  const formRef = useRef<HTMLFormElement>(null);
   const [wasSubmitted, setWasSubmitted] = useState(false);
-
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-
-    if (params.get("inquiry") === "sent") {
-      const frame = window.requestAnimationFrame(() => {
-        setWasSubmitted(true);
-        window.history.replaceState(null, "", `${window.location.pathname}${window.location.hash}`);
-        if (!dialogRef.current?.open) dialogRef.current?.showModal();
-      });
-
-      return () => window.cancelAnimationFrame(frame);
-    }
-  }, []);
+  const [isSending, setIsSending] = useState(false);
+  const [submitError, setSubmitError] = useState("");
 
   const openDialog = () => {
     setWasSubmitted(false);
+    setSubmitError("");
     if (!dialogRef.current?.open) dialogRef.current?.showModal();
   };
 
   const closeDialog = () => dialogRef.current?.close();
+
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setIsSending(true);
+    setSubmitError("");
+
+    const formData = new FormData(event.currentTarget);
+    const firstName = String(formData.get("first_name") ?? "").trim();
+    const lastName = String(formData.get("last_name") ?? "").trim();
+    const email = String(formData.get("email") ?? "").trim();
+    const message = String(formData.get("message") ?? "").trim();
+    const honeypot = String(formData.get("website") ?? "").trim();
+
+    if (honeypot) {
+      setIsSending(false);
+      setWasSubmitted(true);
+      return;
+    }
+
+    try {
+      const response = await fetch(emailJsConfig.endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          service_id: emailJsConfig.serviceId,
+          template_id: emailJsConfig.templateId,
+          user_id: emailJsConfig.publicKey,
+          template_params: {
+            name: `${firstName} ${lastName}`.trim(),
+            email,
+            message,
+            title: "Portfolio inquiry",
+            time: new Intl.DateTimeFormat("en-GB", {
+              dateStyle: "medium",
+              timeStyle: "short",
+              timeZone: "Europe/Berlin",
+            }).format(new Date()),
+          },
+        }),
+      });
+
+      if (!response.ok) throw new Error(await response.text());
+
+      formRef.current?.reset();
+      setWasSubmitted(true);
+    } catch {
+      setSubmitError("Your message could not be sent. Please try again or email me directly.");
+    } finally {
+      setIsSending(false);
+    }
+  };
 
   return (
     <>
@@ -71,19 +117,15 @@ export function InquiryForm() {
               <button type="button" onClick={closeDialog}>Close</button>
             </div>
           ) : (
-            <form className="inquiry-form" action={inquiryEndpoint} method="POST">
-              <input type="hidden" name="_subject" value="New portfolio inquiry" />
-              <input type="hidden" name="_template" value="table" />
-              <input type="hidden" name="_autoresponse" value={confirmationMessage} />
-              <input type="hidden" name="_next" value="https://mehtanandini.github.io/?inquiry=sent" />
-              <input className="inquiry-honeypot" type="text" name="_honey" tabIndex={-1} autoComplete="off" />
+            <form className="inquiry-form" ref={formRef} onSubmit={handleSubmit}>
+              <input className="inquiry-honeypot" type="text" name="website" tabIndex={-1} autoComplete="off" />
 
               <div className="inquiry-name-fields">
                 <label>
                   <span>First name</span>
                   <input
                     type="text"
-                    name="First name"
+                    name="first_name"
                     autoComplete="given-name"
                     pattern={namePattern}
                     minLength={2}
@@ -99,7 +141,7 @@ export function InquiryForm() {
                   <span>Last name</span>
                   <input
                     type="text"
-                    name="Last name"
+                    name="last_name"
                     autoComplete="family-name"
                     pattern={namePattern}
                     minLength={2}
@@ -129,12 +171,20 @@ export function InquiryForm() {
 
               <label>
                 <span>Message</span>
-                <textarea name="Message" rows={5} required />
+                <textarea name="message" rows={5} required />
               </label>
+
+              {submitError ? (
+                <p className="inquiry-error" role="alert">
+                  {submitError} <a href="mailto:nandimehta2204@gmail.com">Email Nandini</a>
+                </p>
+              ) : null}
 
               <div className="inquiry-form-footer">
                 <p>Your message is sent directly to my email.</p>
-                <button type="submit">Send message <span aria-hidden="true">↗</span></button>
+                <button type="submit" disabled={isSending}>
+                  {isSending ? "Sending…" : "Send message"} <span aria-hidden="true">↗</span>
+                </button>
               </div>
             </form>
           )}
