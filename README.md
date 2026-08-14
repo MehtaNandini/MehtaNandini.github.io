@@ -36,4 +36,3 @@ The workflow supports both a user site such as `username.github.io` and a projec
 - `app/globals.css` — visual system and responsive layouts
 - `app/layout.tsx` — metadata and typography
 - `.github/workflows/deploy-pages.yml` — GitHub Pages deployment
-- `public/Nandini_Mehta_CV.pdf` — downloadable CV

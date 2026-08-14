@@ -396,7 +396,6 @@ export function ThreeRoadmap() {
           </h1>
           <div className="hero-actions">
             <a className="primary-action" href="#roadmap">Enter project roadmap <span aria-hidden="true">↓</span></a>
-            <a className="text-action" href="./Nandini_Mehta_CV.pdf" download>Download full CV ↗</a>
           </div>
           <div className="scroll-cue" aria-hidden="true"><span /> Scroll to navigate</div>
         </section>

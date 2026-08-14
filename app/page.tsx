@@ -70,9 +70,6 @@ export default function Home() {
           <a href="#contact">Contact</a>
         </nav>
 
-        <a className="header-cv" href="./Nandini_Mehta_CV.pdf" download>
-          Download CV <span aria-hidden="true">↗</span>
-        </a>
       </header>
 
       <main id="main-content">
@@ -110,7 +107,6 @@ export default function Home() {
             <a href="mailto:nandimehta2204@gmail.com">Email: nandimehta2204@gmail.com</a>
             <a href="https://www.linkedin.com/in/mehtanandini" target="_blank" rel="noreferrer">LinkedIn ↗</a>
             <a href="https://github.com/mehtanandini" target="_blank" rel="noreferrer">GitHub ↗</a>
-            <a href="./Nandini_Mehta_CV.pdf" download>Full CV ↓</a>
           </div>
         </div>
         <div className="footer-secondary">

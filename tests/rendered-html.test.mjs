@@ -28,12 +28,12 @@ test("exports a complete portfolio page", async () => {
   assert.match(html, /href="tel:\+4917634668019"/);
   assert.match(html, /href="mailto:nandimehta2204@gmail\.com"/);
   assert.match(html, /Return to origin/);
+  assert.doesNotMatch(html, /Nandini_Mehta_CV|Download CV|Full CV/);
   assert.doesNotMatch(html, /codex-preview|SkeletonPreview|react-loading-skeleton/);
 });
 
-test("ships the downloadable CV and GitHub Pages workflow", async () => {
+test("ships portfolio assets and the GitHub Pages workflow", async () => {
   await Promise.all([
-    access(new URL("dist/client/Nandini_Mehta_CV.pdf", root)),
     access(new URL("dist/client/og.png", root)),
     access(new URL("dist/client/projects/document-ai/01-dashboard.png", root)),
     access(new URL("dist/client/projects/claimvision-ai/01-dashboard.png", root)),

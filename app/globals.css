@@ -160,20 +160,6 @@ button:focus-visible,
 }
 .desktop-nav a:hover { color: var(--paper); }
 
-.header-cv {
-  display: inline-flex;
-  min-height: 2.75rem;
-  align-items: center;
-  justify-self: end;
-  gap: 1.3rem;
-  padding: 0 1rem;
-  border: 1px solid var(--line-strong);
-  font-size: 0.8rem;
-  font-weight: 680;
-  transition: background 160ms ease, color 160ms ease, border-color 160ms ease;
-}
-.header-cv:hover { background: var(--signal); color: var(--void); border-color: var(--signal); }
-
 .roadmap-world { position: relative; background: var(--void); }
 
 .roadmap-scene {
@@ -274,8 +260,6 @@ button:focus-visible,
   transition: transform 180ms ease, box-shadow 180ms ease;
 }
 .primary-action:hover { transform: translate(-3px, -3px); box-shadow: 7px 7px 0 var(--warm); }
-.text-action { padding: 0.8rem 0; border-bottom: 1px solid var(--line-strong); color: var(--paper); font-size: 0.82rem; }
-
 .scroll-cue {
   position: absolute;
   bottom: 2rem;
@@ -711,8 +695,6 @@ button:focus-visible,
   :root { --gutter: 1.15rem; }
   .site-header { min-height: 4.4rem; padding-right: max(var(--gutter), env(safe-area-inset-right)); padding-left: max(var(--gutter), env(safe-area-inset-left)); }
   .brand > span:last-child { display: none; }
-  .header-cv { min-height: 2.75rem; }
-
   .roadmap-scene canvas { opacity: 0.72; }
   .scene-hud { right: auto; bottom: 1.1rem; left: var(--gutter); }
   .hero { min-height: max(100svh, 42rem); padding-top: 7rem; justify-content: flex-start; }
@@ -723,7 +705,6 @@ button:focus-visible,
   .hero-copy { max-width: 28rem; margin-top: 3rem; font-size: 1.05rem; }
   .hero-actions { align-items: stretch; flex-direction: column; gap: 0.8rem; }
   .primary-action { width: 100%; }
-  .text-action { width: max-content; }
   .scroll-cue { display: none; }
 
   .project-chapters { grid-template-columns: 1fr; gap: 1rem; padding: 6rem var(--gutter); }
@@ -768,8 +749,6 @@ button:focus-visible,
 
   .site-header { min-height: 4rem; }
   .brand-core { width: 2.15rem; height: 2.15rem; }
-  .header-cv { min-height: 2.4rem; gap: 0.65rem; padding: 0 0.75rem; font-size: 0.72rem; }
-
   .scene-hud { display: none; }
   .hero { min-height: max(100svh, 39rem); padding: 5.5rem var(--gutter) 2rem; }
   .hero-meta { gap: 0.4rem; margin-top: 0.75rem; margin-bottom: 0; font-size: 0.66rem; }
@@ -777,8 +756,6 @@ button:focus-visible,
   .hero h1 em { margin-left: 0.12em; }
   .hero-actions { gap: 0.65rem; margin-top: 1.75rem; }
   .primary-action { min-height: 3.25rem; gap: 1rem; padding: 0 0.85rem; }
-  .text-action { font-size: 0.76rem; }
-
   .project-chapters { gap: 0.8rem; padding: 4rem var(--gutter); }
   .chapter-card { min-height: 18rem; padding: 1.15rem; }
   .chapter-card h3 { margin-top: 2.75rem; font-size: clamp(1.8rem, 9vw, 2.45rem); }
