@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import type { CSSProperties } from "react";
+import { InquiryForm } from "./InquiryForm";
 import { ThreeRoadmap } from "./ThreeRoadmap";
 
 export const metadata: Metadata = {
@@ -64,12 +65,14 @@ export default function Home() {
           <span>Nandini Mehta</span>
         </a>
 
-        <nav className="desktop-nav" aria-label="Primary navigation">
-          <a href="#roadmap">Roadmap</a>
-          <a href="#capabilities">Capabilities</a>
-          <a href="#contact">Contact</a>
-        </nav>
-
+        <div className="header-actions">
+          <nav className="desktop-nav" aria-label="Primary navigation">
+            <a href="#roadmap">Roadmap</a>
+            <a href="#capabilities">Capabilities</a>
+            <a href="#contact">Contact</a>
+          </nav>
+          <InquiryForm />
+        </div>
       </header>
 
       <main id="main-content">
