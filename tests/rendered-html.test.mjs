@@ -31,7 +31,10 @@ test("exports a complete portfolio page", async () => {
   assert.match(html, /action="https:\/\/formsubmit\.co\/nandimehta2204@gmail\.com"/);
   assert.match(html, /name="First name"/);
   assert.match(html, /name="Last name"/);
+  assert.match(html, /type="email"[^>]+name="email"/);
   assert.match(html, /name="Message"/);
+  assert.match(html, /name="_autoresponse"/);
+  assert.match(html, /Your inquiry was sent successfully/);
   assert.match(html, /Return to origin/);
   assert.doesNotMatch(html, /Nandini_Mehta_CV|Download CV|Full CV/);
   assert.doesNotMatch(html, /codex-preview|SkeletonPreview|react-loading-skeleton/);

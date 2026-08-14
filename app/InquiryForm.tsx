@@ -3,6 +3,12 @@
 import { useEffect, useRef, useState } from "react";
 
 const inquiryEndpoint = "https://formsubmit.co/nandimehta2204@gmail.com";
+const confirmationMessage =
+  "Thank you for your message. Your inquiry was sent successfully. I will contact you as soon as possible.";
+const namePattern = "[A-Za-zÀ-ÖØ-öø-ÿĀ-ž'\\- ]{2,50}";
+
+const removeInvalidNameCharacters = (value: string) =>
+  value.replace(/[^\p{L}\p{M}' -]/gu, "");
 
 export function InquiryForm() {
   const dialogRef = useRef<HTMLDialogElement>(null);
@@ -61,26 +67,65 @@ export function InquiryForm() {
           {wasSubmitted ? (
             <div className="inquiry-success" role="status">
               <strong>Message sent.</strong>
-              <p>Thank you for your inquiry. I will get back to you soon.</p>
+              <p>{confirmationMessage}</p>
               <button type="button" onClick={closeDialog}>Close</button>
             </div>
           ) : (
             <form className="inquiry-form" action={inquiryEndpoint} method="POST">
               <input type="hidden" name="_subject" value="New portfolio inquiry" />
               <input type="hidden" name="_template" value="table" />
+              <input type="hidden" name="_autoresponse" value={confirmationMessage} />
               <input type="hidden" name="_next" value="https://mehtanandini.github.io/?inquiry=sent" />
               <input className="inquiry-honeypot" type="text" name="_honey" tabIndex={-1} autoComplete="off" />
 
               <div className="inquiry-name-fields">
                 <label>
                   <span>First name</span>
-                  <input type="text" name="First name" autoComplete="given-name" required />
+                  <input
+                    type="text"
+                    name="First name"
+                    autoComplete="given-name"
+                    pattern={namePattern}
+                    minLength={2}
+                    maxLength={50}
+                    title="Use letters, spaces, apostrophes, or hyphens only."
+                    onInput={(event) => {
+                      event.currentTarget.value = removeInvalidNameCharacters(event.currentTarget.value);
+                    }}
+                    required
+                  />
                 </label>
                 <label>
                   <span>Last name</span>
-                  <input type="text" name="Last name" autoComplete="family-name" required />
+                  <input
+                    type="text"
+                    name="Last name"
+                    autoComplete="family-name"
+                    pattern={namePattern}
+                    minLength={2}
+                    maxLength={50}
+                    title="Use letters, spaces, apostrophes, or hyphens only."
+                    onInput={(event) => {
+                      event.currentTarget.value = removeInvalidNameCharacters(event.currentTarget.value);
+                    }}
+                    required
+                  />
                 </label>
               </div>
+
+              <label>
+                <span>Email address</span>
+                <input
+                  type="email"
+                  name="email"
+                  autoComplete="email"
+                  inputMode="email"
+                  pattern="[^\s@]+@[^\s@]+\.[^\s@]{2,}"
+                  maxLength={254}
+                  title="Enter a valid email address, for example name@example.com."
+                  required
+                />
+              </label>
 
               <label>
                 <span>Message</span>
