@@ -13,6 +13,7 @@ const nodePositions = [
   new THREE.Vector3(1.3, -1.94, -0.2),
   new THREE.Vector3(3.6, -3.16, 0.15),
   new THREE.Vector3(1.45, -4.38, -0.05),
+  new THREE.Vector3(3.55, -5.6, 0.2),
 ];
 
 function createProjectTexture(project: (typeof projects)[number], index: number) {
@@ -188,6 +189,7 @@ export function ThreeRoadmap() {
       new THREE.Euler(-0.025, -0.15, -0.03),
       new THREE.Euler(0.03, 0.14, 0.03),
       new THREE.Euler(-0.035, -0.12, -0.025),
+      new THREE.Euler(0.03, 0.13, 0.035),
     ];
     const cardFaces: THREE.Mesh[] = [];
     const cards: Array<{
@@ -326,7 +328,7 @@ export function ThreeRoadmap() {
       world.rotation.y += ((compact ? -0.05 : -0.12) + pointerX * 0.12 - world.rotation.y) * 0.025;
       world.rotation.x += (-pointerY * 0.08 - world.rotation.x) * 0.025;
       world.position.x += ((compact ? -0.05 : 0.28) - nodePositions[current].x * 0.025 - world.position.x) * 0.018;
-      world.position.y += (-nodePositions[current].y * 0.05 - world.position.y) * 0.018;
+      world.position.y += (-nodePositions[current].y * 0.1 - world.position.y) * 0.018;
       cards.forEach(({ group, material, frameMaterial, portMaterial, basePosition, baseRotation }, index) => {
         const selected = index === current;
         const hovered = index === hoveredProject;

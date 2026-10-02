@@ -341,4 +341,45 @@ export const projects: readonly PortfolioProject[] = [
       { src: "./projects/applied-ml/05-sentiment-distribution.png", alt: "Positive and negative tweet sentiment distribution chart", caption: "Sentiment distribution" },
     ],
   },
+  {
+    phase: "Analyze",
+    title: "Euro 7 Automotive Data & ML Pipeline",
+    shortTitle: "Euro 7 Data & ML Pipeline",
+    statement: "Process large-scale OBD and CAN time-series data into validated anomaly and clustering insights.",
+    description:
+      "A modular automotive data and machine-learning pipeline built for more than 25 GB and approximately 90 million OBD and CAN records. It cleans and transforms noisy engineering time series, prepares model features, applies anomaly-detection and clustering methods, and produces repeatable evaluations and traceable technical findings.",
+    input: "25+ GB OBD and CAN data",
+    output: "Validated anomaly insights",
+    status: "Large-scale engineering data pipeline",
+    stack: ["Python", "Pandas", "NumPy", "scikit-learn", "Autoencoders"],
+    technologies: [
+      "Python",
+      "Pandas",
+      "NumPy",
+      "scikit-learn",
+      "Autoencoders",
+      "Principal Component Analysis",
+      "UMAP",
+      "Time-series processing",
+    ],
+    features: [
+      "Processing workflow for more than 25 GB and approximately 90 million automotive records",
+      "Modular cleaning, transformation, feature-preparation, and validation stages",
+      "OBD and CAN time-series processing for noisy real-world engineering data",
+      "Anomaly-detection workflows using machine-learning techniques",
+      "Clustering and dimensionality-reduction analysis with PCA and UMAP",
+      "Repeatable model evaluation, result validation, and test-specification outputs",
+    ],
+    future: [
+      "The source portfolio does not list a separate future-work roadmap",
+      "The documented scope focuses on validated analysis workflows and traceable engineering findings",
+    ],
+    screenshots: [
+      {
+        src: "./projects/euro7-data/01-pipeline.svg",
+        alt: "Euro 7 automotive OBD and CAN data processing and machine-learning pipeline",
+        caption: "Large-scale automotive data and ML workflow",
+      },
+    ],
+  },
 ];

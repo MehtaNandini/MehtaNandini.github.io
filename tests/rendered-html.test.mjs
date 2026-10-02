@@ -17,6 +17,7 @@ test("exports a complete portfolio page", async () => {
   assert.match(html, /ClaimVision AI/);
   assert.match(html, /Vehicle Fault &amp; Emission Anomaly Detection/);
   assert.match(html, /Applied Computer Vision &amp; Machine Learning Portfolio/);
+  assert.match(html, /Euro 7 Automotive Data &amp; ML Pipeline/);
   assert.match(html, /Languages \/ Technologies/);
   assert.doesNotMatch(html, /Six projects/);
   assert.match(html, /canvas/);
@@ -57,6 +58,7 @@ test("ships portfolio assets and the GitHub Pages workflow", async () => {
     access(new URL("dist/client/projects/vehicle-anomaly/01-dashboard-healthy.png", root)),
     access(new URL("dist/client/projects/applied-ml/01-palm-tracking.png", root)),
     access(new URL("dist/client/projects/applied-ml/05-sentiment-distribution.png", root)),
+    access(new URL("dist/client/projects/euro7-data/01-pipeline.svg", root)),
     access(new URL(".github/workflows/deploy-pages.yml", root)),
   ]);
 });

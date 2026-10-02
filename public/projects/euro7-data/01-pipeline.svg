@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" role="img" aria-labelledby="title description">
+  <title id="title">Euro 7 automotive data and machine learning pipeline</title>
+  <desc id="description">A five-stage pipeline from OBD and CAN time-series records through cleaning, feature engineering, modelling, and validated engineering findings.</desc>
+  <defs>
+    <linearGradient id="background" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#07100d"/>
+      <stop offset="1" stop-color="#0b1712"/>
+    </linearGradient>
+    <pattern id="grid" width="64" height="64" patternUnits="userSpaceOnUse">
+      <path d="M64 0H0V64" fill="none" stroke="#d1e7da" stroke-opacity=".06"/>
+    </pattern>
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="9" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M0 0L10 5 0 10Z" fill="#caff46"/>
+    </marker>
+  </defs>
+
+  <rect width="1920" height="1080" fill="url(#background)"/>
+  <rect width="1920" height="1080" fill="url(#grid)"/>
+  <circle cx="1650" cy="180" r="260" fill="#caff46" opacity=".035" filter="url(#glow)"/>
+
+  <g font-family="Arial, Helvetica, sans-serif">
+    <text x="120" y="120" fill="#caff46" font-family="monospace" font-size="26" letter-spacing="6">LARGE DATA  /  AUTOMOTIVE ENGINEERING</text>
+    <text x="120" y="205" fill="#e9f0eb" font-size="66" font-weight="600">Euro 7 Automotive Data &amp; ML Pipeline</text>
+    <text x="120" y="263" fill="#91a39a" font-size="27">Modular processing, anomaly detection, clustering, and repeatable validation.</text>
+
+    <g transform="translate(120 340)">
+      <g transform="translate(0)">
+        <rect width="290" height="310" fill="#0d1d16" stroke="#caff46" stroke-width="2"/>
+        <text x="30" y="52" fill="#caff46" font-family="monospace" font-size="22">01  INGEST</text>
+        <text x="30" y="120" fill="#e9f0eb" font-size="35" font-weight="600">OBD &amp; CAN</text>
+        <text x="30" y="166" fill="#e9f0eb" font-size="35" font-weight="600">time series</text>
+        <text x="30" y="235" fill="#91a39a" font-size="22">25+ GB</text>
+        <text x="30" y="270" fill="#91a39a" font-size="22">~90M records</text>
+      </g>
+
+      <path d="M305 155H350" stroke="#caff46" stroke-width="3" marker-end="url(#arrow)"/>
+
+      <g transform="translate(365)">
+        <rect width="290" height="310" fill="#0d1d16" stroke="#d1e7da" stroke-opacity=".3"/>
+        <text x="30" y="52" fill="#caff46" font-family="monospace" font-size="22">02  PREPARE</text>
+        <text x="30" y="120" fill="#e9f0eb" font-size="34" font-weight="600">Clean</text>
+        <text x="30" y="166" fill="#e9f0eb" font-size="34" font-weight="600">Transform</text>
+        <text x="30" y="212" fill="#e9f0eb" font-size="34" font-weight="600">Validate</text>
+        <text x="30" y="270" fill="#91a39a" font-size="21">Modular processing</text>
+      </g>
+
+      <path d="M670 155H715" stroke="#caff46" stroke-width="3" marker-end="url(#arrow)"/>
+
+      <g transform="translate(730)">
+        <rect width="290" height="310" fill="#0d1d16" stroke="#d1e7da" stroke-opacity=".3"/>
+        <text x="30" y="52" fill="#caff46" font-family="monospace" font-size="22">03  ENGINEER</text>
+        <text x="30" y="120" fill="#e9f0eb" font-size="34" font-weight="600">Feature</text>
+        <text x="30" y="166" fill="#e9f0eb" font-size="34" font-weight="600">preparation</text>
+        <text x="30" y="235" fill="#91a39a" font-size="21">Noisy real-world</text>
+        <text x="30" y="270" fill="#91a39a" font-size="21">engineering data</text>
+      </g>
+
+      <path d="M1035 155H1080" stroke="#caff46" stroke-width="3" marker-end="url(#arrow)"/>
+
+      <g transform="translate(1095)">
+        <rect width="290" height="310" fill="#0d1d16" stroke="#d1e7da" stroke-opacity=".3"/>
+        <text x="30" y="52" fill="#caff46" font-family="monospace" font-size="22">04  MODEL</text>
+        <text x="30" y="118" fill="#e9f0eb" font-size="31" font-weight="600">Autoencoders</text>
+        <text x="30" y="168" fill="#e9f0eb" font-size="31" font-weight="600">PCA</text>
+        <text x="30" y="218" fill="#e9f0eb" font-size="31" font-weight="600">UMAP</text>
+        <text x="30" y="270" fill="#91a39a" font-size="21">Anomalies &amp; clusters</text>
+      </g>
+
+      <path d="M1400 155H1445" stroke="#caff46" stroke-width="3" marker-end="url(#arrow)"/>
+
+      <g transform="translate(1460)">
+        <rect width="220" height="310" fill="#caff46"/>
+        <text x="28" y="52" fill="#07100d" font-family="monospace" font-size="22">05  VERIFY</text>
+        <text x="28" y="120" fill="#07100d" font-size="32" font-weight="700">Repeatable</text>
+        <text x="28" y="163" fill="#07100d" font-size="32" font-weight="700">evaluation</text>
+        <text x="28" y="228" fill="#07100d" font-size="22">Traceable findings</text>
+        <text x="28" y="263" fill="#07100d" font-size="22">Test specifications</text>
+      </g>
+    </g>
+
+    <g transform="translate(120 770)">
+      <line x1="0" y1="0" x2="1680" y2="0" stroke="#d1e7da" stroke-opacity=".18"/>
+      <text x="0" y="76" fill="#91a39a" font-family="monospace" font-size="22" letter-spacing="3">TECHNOLOGY</text>
+      <text x="0" y="130" fill="#e9f0eb" font-size="27">Python  ·  Pandas  ·  NumPy  ·  scikit-learn  ·  Autoencoders  ·  PCA  ·  UMAP</text>
+      <text x="0" y="218" fill="#ff9f43" font-family="monospace" font-size="22" letter-spacing="3">OUTCOME</text>
+      <text x="0" y="270" fill="#e9f0eb" font-size="28">Validated anomaly and clustering workflows for Euro 7 engineering analysis.</text>
+    </g>
+  </g>
+</svg>
