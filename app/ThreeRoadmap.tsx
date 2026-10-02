@@ -400,6 +400,14 @@ export function ThreeRoadmap() {
           </h1>
           <div className="hero-actions">
             <a className="primary-action" href="#roadmap">Enter project roadmap <span aria-hidden="true">↓</span></a>
+            <a
+              className="portfolio-pdf-action"
+              href="/Nandini_Mehta_Portfolio.pdf"
+              target="_blank"
+              rel="noreferrer"
+            >
+              View portfolio PDF <span aria-hidden="true">↗</span>
+            </a>
           </div>
           <div className="scroll-cue" aria-hidden="true"><span /> Scroll to navigate</div>
         </section>

@@ -30,6 +30,8 @@ test("exports a complete portfolio page", async () => {
   assert.match(html, /href="tel:\+4917634668019"/);
   assert.match(html, /href="mailto:nandimehta2204@gmail\.com"/);
   assert.match(html, /Send inquiry/);
+  assert.match(html, /View portfolio PDF/);
+  assert.match(html, /href="\/Nandini_Mehta_Portfolio\.pdf"/);
   assert.doesNotMatch(html, /formsubmit\.co/);
   assert.match(html, /name="first_name"/);
   assert.match(html, /name="last_name"/);
@@ -59,6 +61,7 @@ test("ships portfolio assets and the GitHub Pages workflow", async () => {
     access(new URL("dist/client/projects/applied-ml/01-palm-tracking.png", root)),
     access(new URL("dist/client/projects/applied-ml/05-sentiment-distribution.png", root)),
     access(new URL("dist/client/projects/euro7-data/01-pipeline.svg", root)),
+    access(new URL("dist/client/Nandini_Mehta_Portfolio.pdf", root)),
     access(new URL(".github/workflows/deploy-pages.yml", root)),
   ]);
 });

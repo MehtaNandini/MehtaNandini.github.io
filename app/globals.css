@@ -368,6 +368,21 @@ button:focus-visible,
   transition: transform 180ms ease, box-shadow 180ms ease;
 }
 .primary-action:hover { transform: translate(-3px, -3px); box-shadow: 7px 7px 0 var(--warm); }
+.portfolio-pdf-action {
+  display: inline-flex;
+  min-height: 3.5rem;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2.5rem;
+  padding: 0 1rem;
+  border: 1px solid var(--line-strong);
+  background: rgba(7, 16, 13, 0.72);
+  color: var(--paper);
+  font-size: 0.84rem;
+  font-weight: 680;
+  transition: border-color 160ms ease, color 160ms ease, transform 180ms ease;
+}
+.portfolio-pdf-action:hover { border-color: var(--signal); color: var(--signal); transform: translateY(-2px); }
 .scroll-cue {
   position: absolute;
   bottom: 2rem;
@@ -811,7 +826,8 @@ button:focus-visible,
   .hero h1 em { margin-left: 0.18em; }
   .hero-copy { max-width: 28rem; margin-top: 3rem; font-size: 1.05rem; }
   .hero-actions { align-items: stretch; flex-direction: column; gap: 0.8rem; }
-  .primary-action { width: 100%; }
+  .primary-action,
+  .portfolio-pdf-action { width: 100%; }
   .scroll-cue { display: none; }
 
   .project-chapters { grid-template-columns: 1fr; gap: 1rem; padding: 6rem var(--gutter); }
@@ -867,7 +883,8 @@ button:focus-visible,
   .hero h1 { margin-top: 1.75rem; font-size: clamp(3.6rem, 20vw, 5.2rem); line-height: 0.8; }
   .hero h1 em { margin-left: 0.12em; }
   .hero-actions { gap: 0.65rem; margin-top: 1.75rem; }
-  .primary-action { min-height: 3.25rem; gap: 1rem; padding: 0 0.85rem; }
+  .primary-action,
+  .portfolio-pdf-action { min-height: 3.25rem; gap: 1rem; padding: 0 0.85rem; }
   .project-chapters { gap: 0.8rem; padding: 4rem var(--gutter); }
   .chapter-card { min-height: 18rem; padding: 1.15rem; }
   .chapter-card h3 { margin-top: 2.75rem; font-size: clamp(1.8rem, 9vw, 2.45rem); }
@@ -908,6 +925,7 @@ button:focus-visible,
 
 @media (hover: none) {
   .primary-action:hover { transform: none; box-shadow: none; }
+  .portfolio-pdf-action:hover { transform: none; }
   .chapter-card:hover { border-color: var(--line); background: transparent; }
 }
 
