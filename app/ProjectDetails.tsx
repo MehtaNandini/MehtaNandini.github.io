@@ -89,10 +89,11 @@ export function ProjectChapterCard({ index, project, onOpen }: ProjectChapterCar
 type ProjectDetailDialogProps = {
   index: number;
   project: PortfolioProject;
+  total: number;
   onClose: () => void;
 };
 
-export function ProjectDetailDialog({ index, project, onClose }: ProjectDetailDialogProps) {
+export function ProjectDetailDialog({ index, project, total, onClose }: ProjectDetailDialogProps) {
   const [activeShot, setActiveShot] = useState(0);
   const [autoAdvance, setAutoAdvance] = useState(true);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
@@ -194,7 +195,7 @@ export function ProjectDetailDialog({ index, project, onClose }: ProjectDetailDi
       >
         <header className="project-detail-header">
           <div>
-            <span>CASE STUDY {String(index + 1).padStart(2, "0")} / 06</span>
+            <span>CASE STUDY {String(index + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}</span>
             <p>{project.phase} · {project.status}</p>
           </div>
           <button ref={closeButtonRef} className="project-detail-close" type="button" onClick={onClose}>

@@ -12,6 +12,7 @@ const nodePositions = [
   new THREE.Vector3(3.5, -0.72, 0.4),
   new THREE.Vector3(1.3, -1.94, -0.2),
   new THREE.Vector3(3.6, -3.16, 0.15),
+  new THREE.Vector3(1.45, -4.38, -0.05),
 ];
 
 function createProjectTexture(project: (typeof projects)[number], index: number) {
@@ -186,6 +187,7 @@ export function ThreeRoadmap() {
       new THREE.Euler(0.035, 0.12, 0.035),
       new THREE.Euler(-0.025, -0.15, -0.03),
       new THREE.Euler(0.03, 0.14, 0.03),
+      new THREE.Euler(-0.035, -0.12, -0.025),
     ];
     const cardFaces: THREE.Mesh[] = [];
     const cards: Array<{
@@ -418,6 +420,7 @@ export function ThreeRoadmap() {
         <ProjectDetailDialog
           index={selectedProject}
           project={projects[selectedProject]}
+          total={projects.length}
           onClose={closeProject}
         />
       )}
