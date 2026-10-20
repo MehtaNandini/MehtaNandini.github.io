@@ -427,6 +427,8 @@ button:focus-visible,
   max-width: var(--max);
   margin: 0 auto;
   padding: clamp(7rem, 10vw, 10rem) var(--gutter);
+  pointer-events: auto;
+  touch-action: pan-y;
 }
 .project-chapter { display: flex; min-width: 0; }
 .project-chapter.is-focused .chapter-card {
