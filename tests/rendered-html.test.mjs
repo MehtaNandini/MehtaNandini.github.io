@@ -19,6 +19,7 @@ test("exports a complete portfolio page", async () => {
   assert.match(html, /Applied Computer Vision &amp; Machine Learning Portfolio/);
   assert.match(html, /Euro 7 Automotive Data &amp; ML Pipeline/);
   assert.match(html, /CaseLedger AI/);
+  assert.match(html, /Scroll projects/);
   assert.match(html, /Languages \/ Technologies/);
   assert.doesNotMatch(html, /Six projects/);
   assert.match(html, /canvas/);

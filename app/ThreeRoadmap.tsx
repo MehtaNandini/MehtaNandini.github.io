@@ -92,6 +92,12 @@ export function ThreeRoadmap() {
   const [selectedProject, setSelectedProject] = useState<number | null>(null);
   const closeProject = useCallback(() => setSelectedProject(null), []);
 
+  const selectSceneProject = useCallback((projectIndex: number) => {
+    const next = Math.max(0, Math.min(projects.length - 1, projectIndex));
+    activeRef.current = next;
+    setActive(next);
+  }, []);
+
   const focusProjectCard = useCallback((projectIndex: number, behavior: ScrollBehavior = "smooth") => {
     const target = chapterRefs.current[projectIndex];
     if (!target) return;
@@ -269,6 +275,8 @@ export function ThreeRoadmap() {
     let pointerX = 0;
     let pointerY = 0;
     let hoveredProject: number | null = null;
+    let wheelAccumulator = 0;
+    let lastWheelStep = 0;
     const raycaster = new THREE.Raycaster();
     const pointer = new THREE.Vector2();
 
@@ -303,6 +311,21 @@ export function ThreeRoadmap() {
 
       focusProjectCard(projectIndex, reduceMotion ? "auto" : "smooth");
     };
+    const onCanvasWheel = (event: WheelEvent) => {
+      const current = activeRef.current;
+      const direction = Math.sign(event.deltaY);
+      const canMove = direction > 0 ? current < projects.length - 1 : current > 0;
+      if (!direction || !canMove) return;
+
+      event.preventDefault();
+      wheelAccumulator += event.deltaY;
+      const now = window.performance.now();
+      if (Math.abs(wheelAccumulator) < 32 || now - lastWheelStep < 220) return;
+
+      selectSceneProject(current + direction);
+      wheelAccumulator = 0;
+      lastWheelStep = now;
+    };
 
     const resize = () => {
       const { width, height } = container.getBoundingClientRect();
@@ -317,6 +340,7 @@ export function ThreeRoadmap() {
     canvas.addEventListener("pointermove", onCanvasPointerMove, { passive: true });
     canvas.addEventListener("pointerleave", onCanvasPointerLeave);
     canvas.addEventListener("click", onCanvasClick);
+    canvas.addEventListener("wheel", onCanvasWheel, { passive: false });
     resize();
 
     const timer = new THREE.Timer();
@@ -330,7 +354,7 @@ export function ThreeRoadmap() {
       world.rotation.y += ((compact ? -0.05 : -0.12) + pointerX * 0.12 - world.rotation.y) * 0.025;
       world.rotation.x += (-pointerY * 0.08 - world.rotation.x) * 0.025;
       world.position.x += ((compact ? -0.05 : 0.28) - nodePositions[current].x * 0.025 - world.position.x) * 0.018;
-      world.position.y += (-nodePositions[current].y * 0.1 - world.position.y) * 0.018;
+      world.position.y += (-nodePositions[current].y * 0.78 - world.position.y) * 0.018;
       cards.forEach(({ group, material, frameMaterial, portMaterial, basePosition, baseRotation }, index) => {
         const selected = index === current;
         const hovered = index === hoveredProject;
@@ -360,6 +384,7 @@ export function ThreeRoadmap() {
       canvas.removeEventListener("pointermove", onCanvasPointerMove);
       canvas.removeEventListener("pointerleave", onCanvasPointerLeave);
       canvas.removeEventListener("click", onCanvasClick);
+      canvas.removeEventListener("wheel", onCanvasWheel);
       resizeObserver.disconnect();
       cardGeometry.dispose();
       cardHitGeometry.dispose();
@@ -377,7 +402,7 @@ export function ThreeRoadmap() {
       });
       renderer.dispose();
     };
-  }, [focusProjectCard]);
+  }, [focusProjectCard, selectSceneProject]);
 
   return (
     <section className="roadmap-world" id="top">
@@ -387,6 +412,25 @@ export function ThreeRoadmap() {
           <p>PROJECT INDEX</p>
           <strong>{String(active + 1).padStart(2, "0")} / {String(projects.length).padStart(2, "0")}</strong>
           <span>{projects[active].phase}</span>
+          <small>Scroll projects</small>
+          <div className="scene-project-controls" aria-label="Browse the 3D project roadmap">
+            <button
+              type="button"
+              aria-label="Previous project"
+              disabled={active === 0}
+              onClick={() => selectSceneProject(active - 1)}
+            >
+              ↑
+            </button>
+            <button
+              type="button"
+              aria-label="Next project"
+              disabled={active === projects.length - 1}
+              onClick={() => selectSceneProject(active + 1)}
+            >
+              ↓
+            </button>
+          </div>
         </div>
       </div>
 

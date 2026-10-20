@@ -298,6 +298,31 @@ button:focus-visible,
 .scene-hud p { grid-column: 1 / -1; margin: 0; color: var(--muted); font-size: 0.62rem; letter-spacing: 0.12em; }
 .scene-hud strong { color: var(--signal); font-size: 0.82rem; }
 .scene-hud span { font-size: 0.72rem; }
+.scene-hud small {
+  grid-column: 1 / -1;
+  color: var(--muted);
+  font-size: 0.58rem;
+  letter-spacing: 0.08em;
+}
+.scene-project-controls {
+  display: grid;
+  grid-column: 1 / -1;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.4rem;
+}
+.scene-project-controls button {
+  display: grid;
+  min-height: 2.35rem;
+  cursor: pointer;
+  place-items: center;
+  border: 1px solid var(--line-strong);
+  background: rgba(7, 16, 13, 0.82);
+  color: var(--paper);
+  pointer-events: auto;
+}
+.scene-project-controls button:hover:not(:disabled),
+.scene-project-controls button:focus-visible { border-color: var(--signal); color: var(--signal); }
+.scene-project-controls button:disabled { cursor: default; opacity: 0.32; }
 
 .roadmap-content { position: relative; z-index: 2; margin-top: -100svh; pointer-events: none; }
 .chapter-card { pointer-events: auto; }
