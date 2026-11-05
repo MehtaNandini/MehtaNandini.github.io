@@ -66,9 +66,9 @@ export const projects: readonly PortfolioProject[] = [
       "Expand evaluation with gold datasets and versioned claim-to-evidence scoring",
     ],
     screenshots: [
-      { src: "./projects/enterprise-ai-workbench/01-overview.svg", alt: "Enterprise AI Delivery Workbench overview dashboard", caption: "AI delivery command center" },
-      { src: "./projects/enterprise-ai-workbench/02-research.svg", alt: "Grounded AI research response with verified citation", caption: "Grounded research and source evidence" },
-      { src: "./projects/enterprise-ai-workbench/03-approval.svg", alt: "Human approval center with quality evaluation", caption: "Evaluation and human approval" },
+      { src: "./projects/enterprise-ai-workbench/01-overview.jpg", alt: "Enterprise AI Delivery Workbench overview dashboard", caption: "AI delivery command center" },
+      { src: "./projects/enterprise-ai-workbench/02-research.jpg", alt: "Grounded AI research response with verified citation", caption: "Grounded research and source evidence" },
+      { src: "./projects/enterprise-ai-workbench/03-approval.jpg", alt: "Human approval center with quality evaluation", caption: "Evaluation and human approval" },
     ],
     github: "https://github.com/MehtaNandini/enterprise-ai-delivery-workbench",
     live: "https://enterprise-ai-delivery-workbench.technologyanever.chatgpt.site",
