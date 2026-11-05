@@ -207,6 +207,12 @@ export function ProjectDetailDialog({ index, project, total, onClose }: ProjectD
           <div>
             <h2 id="project-detail-title">{project.title}</h2>
             <p className="project-detail-statement">{project.statement}</p>
+            {(project.live || project.github) && (
+              <div className="project-detail-links">
+                {project.live && <a href={project.live} target="_blank" rel="noreferrer">Live preview ↗</a>}
+                {project.github && <a href={project.github} target="_blank" rel="noreferrer">GitHub repository ↗</a>}
+              </div>
+            )}
           </div>
           <p>{project.description}</p>
         </div>

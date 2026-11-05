@@ -611,6 +611,10 @@ button:focus-visible,
   line-height: 0.92;
 }
 .project-detail-statement { max-width: 45rem; margin: 2rem 0 0; color: var(--signal); font-size: clamp(1.05rem, 1.5vw, 1.35rem); line-height: 1.55; }
+.project-detail-links { display: flex; flex-wrap: wrap; gap: 0.7rem; margin-top: 1.5rem; }
+.project-detail-links a { display: inline-flex; min-height: 2.7rem; align-items: center; padding: 0 0.9rem; border: 1px solid var(--line-strong); color: #dce7e1; font-family: var(--font-geist-mono), monospace; font-size: 0.72rem; text-decoration: none; }
+.project-detail-links a:first-child { border-color: var(--signal); color: var(--signal); }
+.project-detail-links a:hover { background: rgba(202, 255, 70, 0.08); }
 .project-detail-hero > p { margin: 0; color: var(--muted); font-size: 1rem; line-height: 1.8; }
 
 .project-media-block { padding: 0 clamp(1.2rem, 4vw, 4rem) clamp(3rem, 7vw, 6rem); }

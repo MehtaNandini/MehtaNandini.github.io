@@ -18,9 +18,61 @@ export type PortfolioProject = {
   features: readonly string[];
   future: readonly string[];
   screenshots: readonly ProjectScreenshot[];
+  github?: string;
+  live?: string;
 };
 
 export const projects: readonly PortfolioProject[] = [
+  {
+    phase: "Govern",
+    title: "Enterprise AI Delivery Workbench",
+    shortTitle: "Enterprise AI Delivery Workbench",
+    statement: "Move grounded AI research from evidence to evaluation, observability, and accountable human approval.",
+    description:
+      "A complete AI delivery platform that ingests enterprise documents, runs citation-verified RAG research, generates Pydantic-validated reports, evaluates quality, records token and latency telemetry, replays deterministic workflows, and routes outputs through human review.",
+    input: "Enterprise documents and research questions",
+    output: "Evaluated, approved delivery artifacts",
+    status: "Full-stack portfolio platform with live demo",
+    stack: ["Python", "FastAPI", "React", "ChromaDB", "Docker"],
+    technologies: [
+      "Python 3.11",
+      "FastAPI",
+      "SQLAlchemy and SQLite",
+      "Pydantic",
+      "ChromaDB",
+      "OpenAI-compatible APIs",
+      "Ollama",
+      "React and TypeScript",
+      "Tailwind CSS",
+      "Recharts",
+      "Docker Compose",
+      "Pytest and Ruff",
+      "GitHub Actions",
+    ],
+    features: [
+      "PDF, DOCX, TXT, and Markdown ingestion with safe validation",
+      "Workspace-isolated vector retrieval and verified source citations",
+      "Five schema-validated report types with JSON and Markdown export",
+      "Deterministic workflow metadata and exact cached replay",
+      "Automated quality evaluation with explicit pass/fail explanations",
+      "Token, latency, success-rate, and estimated-cost observability",
+      "Human approval, rejection, change requests, and audit history",
+      "Offline deterministic demo plus OpenAI-compatible and Ollama providers",
+    ],
+    future: [
+      "Replace demo reviewer identity with OIDC SSO and role-based authorization",
+      "Move persistence to PostgreSQL, object storage, and managed vector infrastructure",
+      "Add background jobs, malware scanning, DLP, rate limits, and append-only audit storage",
+      "Expand evaluation with gold datasets and versioned claim-to-evidence scoring",
+    ],
+    screenshots: [
+      { src: "./projects/enterprise-ai-workbench/01-overview.svg", alt: "Enterprise AI Delivery Workbench overview dashboard", caption: "AI delivery command center" },
+      { src: "./projects/enterprise-ai-workbench/02-research.svg", alt: "Grounded AI research response with verified citation", caption: "Grounded research and source evidence" },
+      { src: "./projects/enterprise-ai-workbench/03-approval.svg", alt: "Human approval center with quality evaluation", caption: "Evaluation and human approval" },
+    ],
+    github: "https://github.com/MehtaNandini/enterprise-ai-delivery-workbench",
+    live: "https://enterprise-ai-delivery-workbench.technologyanever.chatgpt.site",
+  },
   {
     phase: "Extract",
     title: "Document Classification & Extraction (NLP/OCR)",
