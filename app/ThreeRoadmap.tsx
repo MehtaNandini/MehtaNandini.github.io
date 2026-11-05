@@ -15,6 +15,7 @@ const nodePositions = [
   new THREE.Vector3(1.45, -4.38, -0.05),
   new THREE.Vector3(3.55, -5.6, 0.2),
   new THREE.Vector3(1.4, -6.82, -0.1),
+  new THREE.Vector3(3.6, -8.04, 0.1),
 ];
 
 function createProjectTexture(project: (typeof projects)[number], index: number) {
@@ -198,6 +199,7 @@ export function ThreeRoadmap() {
       new THREE.Euler(-0.035, -0.12, -0.025),
       new THREE.Euler(0.03, 0.13, 0.035),
       new THREE.Euler(-0.03, -0.14, -0.03),
+      new THREE.Euler(0.035, 0.15, 0.03),
     ];
     const cardFaces: THREE.Mesh[] = [];
     const cards: Array<{
