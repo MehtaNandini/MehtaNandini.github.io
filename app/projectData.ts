@@ -32,7 +32,7 @@ export const projects: readonly PortfolioProject[] = [
       "A complete AI delivery platform that ingests enterprise documents, runs citation-verified RAG research, generates Pydantic-validated reports, evaluates quality, records token and latency telemetry, replays deterministic workflows, and routes outputs through human review.",
     input: "Enterprise documents and research questions",
     output: "Evaluated, approved delivery artifacts",
-    status: "Full-stack portfolio platform with live demo",
+    status: "Full-stack enterprise AI delivery platform",
     stack: ["Python", "FastAPI", "React", "ChromaDB", "Docker"],
     technologies: [
       "Python 3.11",
@@ -66,12 +66,9 @@ export const projects: readonly PortfolioProject[] = [
       "Expand evaluation with gold datasets and versioned claim-to-evidence scoring",
     ],
     screenshots: [
-      { src: "./projects/enterprise-ai-workbench/01-overview.jpg", alt: "Enterprise AI Delivery Workbench overview dashboard", caption: "AI delivery command center" },
-      { src: "./projects/enterprise-ai-workbench/02-research.jpg", alt: "Grounded AI research response with verified citation", caption: "Grounded research and source evidence" },
-      { src: "./projects/enterprise-ai-workbench/03-approval.jpg", alt: "Human approval center with quality evaluation", caption: "Evaluation and human approval" },
+      { src: "./projects/enterprise-ai-workbench/full-page.jpg", alt: "Full-page Enterprise AI Delivery Workbench website overview", caption: "Complete Enterprise AI Delivery Workbench website" },
     ],
     github: "https://github.com/MehtaNandini/enterprise-ai-delivery-workbench",
-    live: "https://enterprise-ai-delivery-workbench.technologyanever.chatgpt.site",
   },
   {
     phase: "Extract",
