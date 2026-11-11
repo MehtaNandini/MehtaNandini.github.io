@@ -7,9 +7,7 @@ from app.schemas.datasets import StateDatasetCreate
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(
-        description="Generate and register voltage-state data"
-    )
+    parser = argparse.ArgumentParser(description="Generate and register voltage-state data")
     parser.add_argument("--buses", type=int, default=5)
     parser.add_argument("--samples", type=int, default=5000)
     parser.add_argument("--noise", type=float, default=0.005)

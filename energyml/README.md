@@ -281,7 +281,9 @@ chronological splitting, metrics, persistence baseline, deterministic training, 
 prediction, per-bus metrics, artifact hashing/loading/corruption, database registration,
 activation, protected deletion, failed experiments, health/comparison/validation, and both
 complete generate → train → activate → infer workflows. GitHub Actions repeats all gates and
-the Docker build.
+then starts the Docker Compose stack with PostgreSQL, trains/activates both models through HTTP,
+restarts the app container, and proves database metadata and model artifacts persist by running
+both inference APIs again.
 
 ## Configuration
 

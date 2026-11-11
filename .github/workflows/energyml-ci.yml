@@ -21,13 +21,26 @@ jobs:
           cache: pip
           cache-dependency-path: energyml/backend/pyproject.toml
       - run: pip install -e '.[dev]'
-      - run: ruff check .
-      - run: black --check .
+      - run: ruff check . ../scripts
+      - run: black --config pyproject.toml --check . ../scripts
       - run: mypy app ../scripts
       - run: pytest
 
-  docker:
+  deployment:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: docker build -t energyml:ci energyml
+      - name: Start PostgreSQL and EnergyML
+        run: docker compose -f energyml/docker-compose.yml up -d --build --wait
+      - name: Train, activate, and infer through Compose
+        run: python3 energyml/scripts/verify_deployment.py seed
+      - name: Restart application container
+        run: docker compose -f energyml/docker-compose.yml restart energyml
+      - name: Verify PostgreSQL and artifact persistence
+        run: python3 energyml/scripts/verify_deployment.py after-restart
+      - name: Show container logs on failure
+        if: failure()
+        run: docker compose -f energyml/docker-compose.yml logs --no-color
+      - name: Stop deployment
+        if: always()
+        run: docker compose -f energyml/docker-compose.yml down -v

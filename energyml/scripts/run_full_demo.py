@@ -25,13 +25,9 @@ def run_demo() -> dict[str, Any]:
         models = ModelService(session)
         models.activate(forecast_model.id)
         forecast_frame = create_forecasting_features(datasets.load_frame(renewable))
-        forecast_values = {
-            name: float(forecast_frame.iloc[-1][name]) for name in FORECAST_FEATURES
-        }
+        forecast_values = {name: float(forecast_frame.iloc[-1][name]) for name in FORECAST_FEATURES}
         inference = InferenceService(session, models, artifacts)
-        forecast_prediction = inference.forecast(
-            ForecastInferenceRequest(**forecast_values)
-        )
+        forecast_prediction = inference.forecast(ForecastInferenceRequest(**forecast_values))
 
         state_dataset = datasets.generate_state(StateDatasetCreate(random_seed=42))
         state_experiment, state_model = StateEstimationExperimentRunner(
@@ -40,9 +36,7 @@ def run_demo() -> dict[str, Any]:
         models.activate(state_model.id)
         state_frame = datasets.load_frame(state_dataset)
         state_features, _ = state_feature_target_columns(list(state_frame.columns))
-        measurements = {
-            name: float(state_frame.iloc[-1][name]) for name in state_features
-        }
+        measurements = {name: float(state_frame.iloc[-1][name]) for name in state_features}
         state_prediction = inference.state_estimation(
             StateInferenceRequest(measurements=measurements)
         )

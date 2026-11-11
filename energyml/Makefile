@@ -11,10 +11,10 @@ test:
 	cd backend && .venv/bin/pytest
 
 lint:
-	cd backend && .venv/bin/ruff check . && .venv/bin/black --check .
+	cd backend && .venv/bin/ruff check . ../scripts && .venv/bin/black --config pyproject.toml --check . ../scripts
 
 format:
-	cd backend && .venv/bin/ruff check --fix . && .venv/bin/black .
+	cd backend && .venv/bin/ruff check --fix . ../scripts && .venv/bin/black --config pyproject.toml . ../scripts
 
 typecheck:
 	cd backend && .venv/bin/mypy app ../scripts

@@ -16,12 +16,8 @@ def main() -> None:
     arguments = parser.parse_args()
     session, datasets, artifacts = services()
     try:
-        experiment, model = ForecastingExperimentRunner(
-            session, datasets, artifacts
-        ).run(
-            ForecastExperimentCreate(
-                dataset_id=arguments.dataset_id, random_seed=arguments.seed
-            )
+        experiment, model = ForecastingExperimentRunner(session, datasets, artifacts).run(
+            ForecastExperimentCreate(dataset_id=arguments.dataset_id, random_seed=arguments.seed)
         )
         print(
             json.dumps(
