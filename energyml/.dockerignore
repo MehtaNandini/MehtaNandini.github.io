@@ -1,0 +1,11 @@
+backend/.venv
+backend/.mypy_cache
+backend/.pytest_cache
+backend/.ruff_cache
+backend/tests
+backend/energyml.db
+artifacts
+datasets
+.git
+__pycache__
+*.pyc

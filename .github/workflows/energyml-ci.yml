@@ -1,0 +1,33 @@
+name: EnergyML CI
+
+on:
+  push:
+    paths: ["energyml/**", ".github/workflows/energyml-ci.yml"]
+  pull_request:
+    paths: ["energyml/**", ".github/workflows/energyml-ci.yml"]
+  workflow_dispatch:
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: energyml/backend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: energyml/backend/pyproject.toml
+      - run: pip install -e '.[dev]'
+      - run: ruff check .
+      - run: black --check .
+      - run: mypy app ../scripts
+      - run: pytest
+
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker build -t energyml:ci energyml

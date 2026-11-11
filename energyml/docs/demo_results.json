@@ -1,0 +1,102 @@
+{
+  "seed": 42,
+  "renewable_dataset": {
+    "id": "0d84ff20-dd14-49f1-ab31-4243c67dbf59",
+    "version": "1.0+197792c14333",
+    "rows": 8760,
+    "sha256": "cc5a1e114fbd0582207e61ca2ba5292fb1ddbd7b545c1fe6371934099642ef5a"
+  },
+  "forecasting": {
+    "experiment_id": "9ec86130-3d02-4609-880c-72af292c669f",
+    "model_id": "b23f7d1c-a1cc-4d53-bc14-61233fb8431f",
+    "metrics": {
+      "model": {
+        "mae": 2.949575387990005,
+        "rmse": 3.7212934182287944,
+        "r2": 0.7790874238975662,
+        "mape_percent": 83.93545364358756
+      },
+      "persistence_baseline": {
+        "mae": 4.757588441414769,
+        "rmse": 6.172989060070224,
+        "r2": 0.39211192337008094,
+        "mape_percent": 121.99658657952533
+      },
+      "improvement_over_baseline": {
+        "mae_percent": 38.00272082566085,
+        "rmse_percent": 39.71650715696455
+      }
+    },
+    "sample_inference": {
+      "prediction": 4.467413232434304,
+      "unit": "MW",
+      "model_id": "b23f7d1c-a1cc-4d53-bc14-61233fb8431f",
+      "model_version": "1.0.0",
+      "experiment_id": "9ec86130-3d02-4609-880c-72af292c669f",
+      "prediction_timestamp": "2026-11-11 16:07:52.703438+00:00"
+    }
+  },
+  "state_dataset": {
+    "id": "1f062704-59be-48a5-9264-ef961821a7a0",
+    "version": "1.0+f4fc0cdc0603",
+    "rows": 5000,
+    "sha256": "0cf58227dc993211c2bad7814db51408f49eefb1f298e796dc2a1107e21c0aed"
+  },
+  "state_estimation": {
+    "experiment_id": "3fa05a0c-8585-42c4-a06b-e27f8a27675b",
+    "model_id": "389d888d-255c-4e96-9ce5-a8f00f2ba9cd",
+    "metrics": {
+      "aggregate": {
+        "mae": 0.00026825539081802043,
+        "rmse": 0.0003943858442968756,
+        "r2": 0.9987741979385252
+      },
+      "per_bus": {
+        "voltage_magnitude_bus_1": {
+          "mae": 0.00013714148748301825,
+          "rmse": 0.00019478729700283192,
+          "r2": 0.9973237138342913,
+          "mape_percent": 0.01361898761032696
+        },
+        "voltage_magnitude_bus_2": {
+          "mae": 0.00018341400939699793,
+          "rmse": 0.0002544721556722309,
+          "r2": 0.9990126034633465,
+          "mape_percent": 0.01850041932355161
+        },
+        "voltage_magnitude_bus_3": {
+          "mae": 0.00023878634107967178,
+          "rmse": 0.0003149464274263853,
+          "r2": 0.9993629207533876,
+          "mape_percent": 0.02445102031559206
+        },
+        "voltage_magnitude_bus_4": {
+          "mae": 0.0003354357003907652,
+          "rmse": 0.00045026273239123055,
+          "r2": 0.9992357977849389,
+          "mape_percent": 0.03482578929124427
+        },
+        "voltage_magnitude_bus_5": {
+          "mae": 0.00044649941573964914,
+          "rmse": 0.0006107986750915516,
+          "r2": 0.9989359538566619,
+          "mape_percent": 0.04678008607926901
+        }
+      }
+    },
+    "sample_inference": {
+      "voltages": {
+        "bus_1": 1.0043039254371229,
+        "bus_2": 0.9861161927752461,
+        "bus_3": 0.9677758238969428,
+        "bus_4": 0.9522851476495413,
+        "bus_5": 0.9421650285033976
+      },
+      "unit": "p.u.",
+      "model_id": "389d888d-255c-4e96-9ce5-a8f00f2ba9cd",
+      "model_version": "1.0.0",
+      "experiment_id": "3fa05a0c-8585-42c4-a06b-e27f8a27675b",
+      "prediction_timestamp": "2026-11-11 16:08:00.901860+00:00"
+    }
+  }
+}
