@@ -35,8 +35,7 @@ class ArtifactManager:
         return path, sha256_file(path)
 
     def load_model(self, registered_path: str, expected_hash: str) -> Any:
-        path = Path(registered_path).resolve()
-        self._validate(path)
+        path = self._registered_file(Path(registered_path))
         if not path.is_file():
             raise FileNotFoundError("registered model artifact is missing")
         if sha256_file(path) != expected_hash:
@@ -58,7 +57,9 @@ class ArtifactManager:
         return path
 
     def manifest(self, directory: Path) -> list[dict[str, Any]]:
-        self._validate(directory.resolve())
+        directory = self._registered_directory(directory)
+        if not directory.is_dir():
+            raise FileNotFoundError("registered artifact directory is missing")
         return [
             {
                 "name": path.name,
@@ -75,6 +76,30 @@ class ArtifactManager:
         path = (directory / filename).resolve()
         self._validate(path)
         return path
+
+    def _registered_file(self, registered: Path) -> Path:
+        if registered.is_absolute():
+            candidate = registered.resolve()
+            if candidate != self.root and self.root not in candidate.parents:
+                if len(registered.parts) < 3:
+                    raise ArtifactSecurityError("invalid registered artifact path")
+                candidate = (self.root / Path(*registered.parts[-3:])).resolve()
+        else:
+            candidate = (self.root / registered).resolve()
+        self._validate(candidate)
+        return candidate
+
+    def _registered_directory(self, registered: Path) -> Path:
+        if registered.is_absolute():
+            candidate = registered.resolve()
+            if candidate != self.root and self.root not in candidate.parents:
+                if len(registered.parts) < 2:
+                    raise ArtifactSecurityError("invalid registered artifact directory")
+                candidate = (self.root / Path(*registered.parts[-2:])).resolve()
+        else:
+            candidate = (self.root / registered).resolve()
+        self._validate(candidate)
+        return candidate
 
     def _validate(self, path: Path) -> None:
         if path != self.root and self.root not in path.parents:

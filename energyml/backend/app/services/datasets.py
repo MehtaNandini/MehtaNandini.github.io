@@ -58,8 +58,8 @@ class DatasetService:
         return record
 
     def load_frame(self, record: DatasetRecord) -> pd.DataFrame:
-        path = Path(record.file_path).resolve()
-        if self.root not in path.parents or not path.is_file():
+        path = self._registered_path(record)
+        if not path.is_file():
             raise FileNotFoundError("registered dataset file is missing or unsafe")
         if sha256_file(path) != record.file_hash:
             raise ValueError("registered dataset hash mismatch")
@@ -75,11 +75,31 @@ class DatasetService:
         )
         if referenced:
             raise DatasetInUseError("dataset is referenced by an experiment")
-        path = Path(record.file_path).resolve()
+        path = self._registered_path(record)
         self.session.delete(record)
         self.session.commit()
-        if path.is_file() and self.root in path.parents:
+        if path.is_file():
             path.unlink()
+
+    def _registered_path(self, record: DatasetRecord) -> Path:
+        """Resolve a registered CSV under the configured dataset directory.
+
+        Existing registries store absolute paths. When a complete EnergyML folder is moved
+        or extracted from an archive, that original absolute path no longer belongs to the
+        configured dataset root. In that case, locate the same immutable CSV by dataset type
+        and filename under the new root. Relative paths are also accepted for future imports.
+        """
+
+        registered = Path(record.file_path)
+        if registered.is_absolute():
+            candidate = registered.resolve()
+            if self.root not in candidate.parents:
+                candidate = (self.root / record.dataset_type / registered.name).resolve()
+        else:
+            candidate = (self.root / registered).resolve()
+        if self.root not in candidate.parents:
+            raise FileNotFoundError("registered dataset file is missing or unsafe")
+        return candidate
 
     def _store(
         self,

@@ -1,3 +1,4 @@
+import shutil
 from pathlib import Path
 
 import pytest
@@ -50,3 +51,22 @@ def test_failed_training_updates_experiment_status(
     assert experiments[-1].status == ExperimentStatus.FAILED.value
     assert experiments[-1].error_message is not None
     assert "intentional training failure" in experiments[-1].error_message
+
+
+def test_registered_dataset_remains_loadable_after_project_is_moved(
+    session: Session, tmp_path: Path
+) -> None:
+    original_root = tmp_path / "original" / "datasets"
+    datasets = DatasetService(session, original_root)
+    record = datasets.generate_renewable(RenewableDatasetCreate(number_of_days=5, random_seed=42))
+    original_path = Path(record.file_path)
+    relocated_root = tmp_path / "relocated" / "datasets"
+    relocated_path = relocated_root / record.dataset_type / original_path.name
+    relocated_path.parent.mkdir(parents=True)
+    shutil.copy2(original_path, relocated_path)
+
+    relocated = DatasetService(session, relocated_root)
+    frame = relocated.load_frame(record)
+
+    assert len(frame) == 5 * 24
+    assert "renewable_generation_mw" in frame

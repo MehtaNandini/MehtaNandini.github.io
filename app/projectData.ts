@@ -103,7 +103,7 @@ export const projects: readonly PortfolioProject[] = [
     features: [
       "Seeded one-year hourly renewable data with causal solar, wind, cloud, temperature, and generation relationships",
       "Leakage-safe lag and shifted rolling features with chronological 70/15/15 evaluation",
-      "Gradient-boosted generation forecasting with a measured 38.0% MAE improvement over 24-hour persistence",
+      "Gradient-boosted generation forecasting with a measured 37.6% MAE improvement over 24-hour persistence",
       "Multi-output random-forest voltage estimation with aggregate held-out MAE of 0.000268 p.u.",
       "Dataset, experiment, model, artifact, and inference registries with SHA-256 verification",
       "Active-model inference APIs, PostgreSQL Docker deployment, complete demo CLI, and automated integration tests",
@@ -115,11 +115,18 @@ export const projects: readonly PortfolioProject[] = [
       "Move synchronous training to a production worker queue",
     ],
     screenshots: [
+      { src: "./projects/energyml/dashboard-captures/01-overview.jpg", alt: "EnergyML overview with populated research registries", caption: "Platform overview and research registry counts" },
+      { src: "./projects/energyml/dashboard-captures/02-datasets.jpg", alt: "EnergyML deterministic renewable and grid dataset registry", caption: "Versioned renewable and state-estimation datasets" },
+      { src: "./projects/energyml/dashboard-captures/03-experiments.jpg", alt: "EnergyML completed forecasting and voltage estimation experiments", caption: "Completed experiments and held-out metrics" },
+      { src: "./projects/energyml/dashboard-captures/04-models.jpg", alt: "EnergyML active forecasting and voltage estimation models", caption: "Verified active model registry" },
+      { src: "./projects/energyml/dashboard-captures/05-inference.jpg", alt: "EnergyML validated inference interface with a live renewable forecast", caption: "Validated active-model inference" },
+      { src: "./projects/energyml/dashboard-captures/06-api.jpg", alt: "EnergyML FastAPI OpenAPI documentation", caption: "Complete interactive OpenAPI surface" },
       { src: "./projects/energyml/01-forecast-timeseries.png", alt: "EnergyML held-out renewable generation time-series forecast", caption: "Held-out renewable forecast" },
       { src: "./projects/energyml/02-forecast-actual-vs-predicted.png", alt: "EnergyML actual versus predicted renewable generation plot", caption: "Actual vs predicted generation" },
       { src: "./projects/energyml/03-voltage-estimation.png", alt: "EnergyML true versus estimated bus voltage plot", caption: "True vs estimated voltage" },
       { src: "./projects/energyml/04-bus-errors.png", alt: "EnergyML per-bus voltage mean absolute error plot", caption: "Per-bus state-estimation error" },
     ],
+    github: "https://github.com/MehtaNandini/MehtaNandini.github.io/tree/main/energyml",
   },
   {
     phase: "Extract",
