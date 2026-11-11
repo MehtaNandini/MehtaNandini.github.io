@@ -42,7 +42,7 @@ Status legend: `[ ]` pending, `[x]` verified.
 
 - [x] Pass Ruff, Black, Mypy and Pytest
 - [x] Run Alembic migration and the full demo
-- [ ] Verify Compose/PostgreSQL persistence (Docker image passes CI; local host disk is full)
+- [x] Verify Docker Compose, PostgreSQL migration, restart, metadata and artifact persistence in CI
 - [x] Verify both inference endpoints
 - [x] Add EnergyML to portfolio and verify the portfolio build/tests
 - [x] Commit and publish the completed changes to Git
