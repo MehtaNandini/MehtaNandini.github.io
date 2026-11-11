@@ -7,9 +7,7 @@ from pydantic import BaseModel, ConfigDict, Field
 class RenewableDatasetCreate(BaseModel):
     model_config = ConfigDict(extra="forbid", allow_inf_nan=False)
 
-    name: str = Field(
-        default="Annual renewable generation", min_length=1, max_length=120
-    )
+    name: str = Field(default="Annual renewable generation", min_length=1, max_length=120)
     start_date: str = "2025-01-01"
     number_of_days: int = Field(default=365, ge=2, le=3650)
     solar_capacity_mw: float = Field(default=60.0, gt=0, le=10_000)
@@ -21,9 +19,7 @@ class RenewableDatasetCreate(BaseModel):
 class StateDatasetCreate(BaseModel):
     model_config = ConfigDict(extra="forbid", allow_inf_nan=False)
 
-    name: str = Field(
-        default="Synthetic distribution network", min_length=1, max_length=120
-    )
+    name: str = Field(default="Synthetic distribution network", min_length=1, max_length=120)
     network_size: int = Field(default=5, ge=2, le=50)
     number_of_samples: int = Field(default=5_000, ge=50, le=1_000_000)
     measurement_noise_std: float = Field(default=0.005, ge=0, le=0.1)

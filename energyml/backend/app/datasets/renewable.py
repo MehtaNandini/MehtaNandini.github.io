@@ -47,9 +47,7 @@ def generate_renewable_dataset(config: RenewableDatasetConfig) -> pd.DataFrame:
     hour = timestamps.hour.to_numpy()
     day_of_year = timestamps.dayofyear.to_numpy()
 
-    seasonal_sun = np.clip(
-        0.72 + 0.28 * np.sin(2 * np.pi * (day_of_year - 80) / 365.25), 0, 1
-    )
+    seasonal_sun = np.clip(0.72 + 0.28 * np.sin(2 * np.pi * (day_of_year - 80) / 365.25), 0, 1)
     daylight = np.clip(np.sin(np.pi * (hour - 6) / 12), 0, None)
     weather_state = _ar1_process(rng, periods, persistence=0.92, innovation_std=0.12)
     cloud_cover = np.clip(50 + 25 * weather_state + rng.normal(0, 8, periods), 0, 100)
@@ -63,16 +61,11 @@ def generate_renewable_dataset(config: RenewableDatasetConfig) -> pd.DataFrame:
     seasonal_temperature = 12 + 10 * np.sin(2 * np.pi * (day_of_year - 172) / 365.25)
     daily_temperature = 4.5 * np.sin(2 * np.pi * (hour - 8) / 24)
     temperature = (
-        seasonal_temperature
-        + daily_temperature
-        + 0.8 * weather_state
-        + rng.normal(0, 1.2, periods)
+        seasonal_temperature + daily_temperature + 0.8 * weather_state + rng.normal(0, 1.2, periods)
     )
 
     wind_state = _ar1_process(rng, periods, persistence=0.88, innovation_std=0.45)
-    wind_speed = np.clip(
-        6.5 + 1.2 * np.sin(2 * np.pi * day_of_year / 14) + wind_state, 0.1, 25
-    )
+    wind_speed = np.clip(6.5 + 1.2 * np.sin(2 * np.pi * day_of_year / 14) + wind_state, 0.1, 25)
     humidity = np.clip(
         72 - 0.75 * temperature + 0.18 * cloud_cover + rng.normal(0, 4, periods),
         20,
@@ -81,9 +74,7 @@ def generate_renewable_dataset(config: RenewableDatasetConfig) -> pd.DataFrame:
 
     solar_efficiency = np.clip(1 - 0.004 * np.maximum(temperature - 25, 0), 0.75, 1.05)
     solar_power = (
-        config.solar_capacity_mw
-        * np.clip(solar_irradiance / 1000, 0, 1)
-        * solar_efficiency
+        config.solar_capacity_mw * np.clip(solar_irradiance / 1000, 0, 1) * solar_efficiency
     )
     cut_in, rated, cut_out = 3.0, 12.0, 25.0
     wind_fraction = np.where(

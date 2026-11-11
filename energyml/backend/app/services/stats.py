@@ -14,10 +14,7 @@ from app.models.enums import ExperimentStatus
 
 def platform_stats(session: Session) -> dict[str, Any]:
     def count(model: Any, *conditions: Any) -> int:
-        return int(
-            session.scalar(select(func.count()).select_from(model).where(*conditions))
-            or 0
-        )
+        return int(session.scalar(select(func.count()).select_from(model).where(*conditions)) or 0)
 
     active_forecast = session.scalar(
         select(ModelRecord.id).where(
@@ -39,12 +36,8 @@ def platform_stats(session: Session) -> dict[str, Any]:
         "failed_experiments": count(
             ExperimentRecord, ExperimentRecord.status == ExperimentStatus.FAILED.value
         ),
-        "forecasting_models": count(
-            ModelRecord, ModelRecord.task_type == "forecasting"
-        ),
-        "state_estimation_models": count(
-            ModelRecord, ModelRecord.task_type == "state_estimation"
-        ),
+        "forecasting_models": count(ModelRecord, ModelRecord.task_type == "forecasting"),
+        "state_estimation_models": count(ModelRecord, ModelRecord.task_type == "state_estimation"),
         "total_inference_requests": count(InferenceRun),
         "active_forecasting_model": active_forecast,
         "active_state_estimation_model": active_state,

@@ -11,9 +11,7 @@ class ModelService:
 
     def list(self) -> list[ModelRecord]:
         return list(
-            self.session.scalars(
-                select(ModelRecord).order_by(ModelRecord.created_at.desc())
-            )
+            self.session.scalars(select(ModelRecord).order_by(ModelRecord.created_at.desc()))
         )
 
     def get(self, model_id: str) -> ModelRecord:
@@ -26,22 +24,16 @@ class ModelService:
         model = self.get(model_id)
         experiment = self.session.get(ExperimentRecord, model.experiment_id)
         if experiment is None or experiment.status != ExperimentStatus.COMPLETED.value:
-            raise ValueError(
-                "only a model from a completed experiment can be activated"
-            )
+            raise ValueError("only a model from a completed experiment can be activated")
         self.session.execute(
-            update(ModelRecord)
-            .where(ModelRecord.task_type == model.task_type)
-            .values(active=False)
+            update(ModelRecord).where(ModelRecord.task_type == model.task_type).values(active=False)
         )
         model.active = True
         self.session.commit()
         self.session.refresh(model)
         return model
 
-    def resolve_for_inference(
-        self, task_type: str, model_id: str | None
-    ) -> ModelRecord:
+    def resolve_for_inference(self, task_type: str, model_id: str | None) -> ModelRecord:
         if model_id is not None:
             explicit_model = self.get(model_id)
             if explicit_model.task_type != task_type:

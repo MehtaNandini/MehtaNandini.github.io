@@ -25,9 +25,7 @@ class JsonFormatter(logging.Formatter):
             if hasattr(record, key):
                 payload[key] = getattr(record, key)
         if record.exc_info:
-            payload["error_type"] = (
-                record.exc_info[0].__name__ if record.exc_info[0] else "Error"
-            )
+            payload["error_type"] = record.exc_info[0].__name__ if record.exc_info[0] else "Error"
         return json.dumps(payload, default=str)
 
 

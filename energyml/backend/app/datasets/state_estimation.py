@@ -36,13 +36,9 @@ def generate_state_dataset(config: StateDatasetConfig) -> pd.DataFrame:
     generation_factor = rng.uniform(0.0, 0.75, samples)
     base_load = np.linspace(0.45, 1.0, buses)
     diversity = rng.lognormal(mean=0.0, sigma=0.12, size=(samples, buses))
-    local_generation = (
-        rng.beta(2.0, 5.0, size=(samples, buses)) * generation_factor[:, None]
-    )
+    local_generation = rng.beta(2.0, 5.0, size=(samples, buses)) * generation_factor[:, None]
     active_true = load_factor[:, None] * base_load * diversity - 0.55 * local_generation
-    reactive_true = 0.28 * np.maximum(active_true, 0) + rng.normal(
-        0, 0.015, (samples, buses)
-    )
+    reactive_true = 0.28 * np.maximum(active_true, 0) + rng.normal(0, 0.015, (samples, buses))
 
     resistance = np.linspace(0.004, 0.009, buses)
     reactance = np.linspace(0.003, 0.007, buses)
@@ -71,8 +67,8 @@ def generate_state_dataset(config: StateDatasetConfig) -> pd.DataFrame:
         data[f"current_measurement_bus_{bus}"] = current_measured[:, index]
         data[f"power_flow_measurement_bus_{bus}"] = flow_measured[:, index]
         if index % 2 == 0:
-            data[f"selected_voltage_measurement_bus_{bus}"] = voltage[
-                :, index
-            ] + rng.normal(0, noise, samples)
+            data[f"selected_voltage_measurement_bus_{bus}"] = voltage[:, index] + rng.normal(
+                0, noise, samples
+            )
         data[f"voltage_magnitude_bus_{bus}"] = voltage[:, index]
     return pd.DataFrame(data)

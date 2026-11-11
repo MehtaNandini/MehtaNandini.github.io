@@ -37,9 +37,7 @@ class ForecastingExperimentRunner(BaseExperimentRunner):
         super().__init__(session, artifact_manager)
         self.dataset_service = dataset_service
 
-    def run(
-        self, request: ForecastExperimentCreate
-    ) -> tuple[ExperimentRecord, ModelRecord]:
+    def run(self, request: ForecastExperimentCreate) -> tuple[ExperimentRecord, ModelRecord]:
         dataset = self.dataset_service.get(request.dataset_id)
         if dataset.dataset_type != "renewable":
             raise ValueError("forecasting requires a renewable dataset")
@@ -57,9 +55,7 @@ class ForecastingExperimentRunner(BaseExperimentRunner):
             },
         )
         try:
-            frame = create_forecasting_features(
-                self.dataset_service.load_frame(dataset)
-            )
+            frame = create_forecasting_features(self.dataset_service.load_frame(dataset))
             started = perf_counter()
             result = train_forecasting_pipeline(
                 frame,
@@ -69,9 +65,7 @@ class ForecastingExperimentRunner(BaseExperimentRunner):
                 random_seed=request.random_seed,
             )
             training_duration = perf_counter() - started
-            directory = self.artifact_manager.experiment_dir(
-                self.experiment_type, experiment.id
-            )
+            directory = self.artifact_manager.experiment_dir(self.experiment_type, experiment.id)
             figures = {
                 "actual_vs_predicted.png": actual_vs_predicted(
                     result.actual,
@@ -91,9 +85,7 @@ class ForecastingExperimentRunner(BaseExperimentRunner):
             for filename, figure in figures.items():
                 self.artifact_manager.save_figure(directory, filename, figure)
                 plt.close(figure)
-            model_path, model_hash = self.artifact_manager.save_model(
-                directory, result.pipeline
-            )
+            model_path, model_hash = self.artifact_manager.save_model(directory, result.pipeline)
             performance: dict[str, Any] = {
                 "training_duration_seconds": training_duration,
                 "dataset_rows": len(frame),

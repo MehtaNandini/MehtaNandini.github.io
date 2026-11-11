@@ -18,12 +18,7 @@ def regression_metrics(
     safe = np.abs(actual_array) > 1e-6
     if actual_array.ndim == 1 and np.any(safe):
         metrics["mape_percent"] = float(
-            np.mean(
-                np.abs(
-                    (actual_array[safe] - predicted_array[safe]) / actual_array[safe]
-                )
-            )
-            * 100
+            np.mean(np.abs((actual_array[safe] - predicted_array[safe]) / actual_array[safe])) * 100
         )
     return metrics
 

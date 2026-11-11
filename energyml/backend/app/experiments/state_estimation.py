@@ -32,9 +32,7 @@ class StateEstimationExperimentRunner(BaseExperimentRunner):
         super().__init__(session, artifact_manager)
         self.dataset_service = dataset_service
 
-    def run(
-        self, request: StateExperimentCreate
-    ) -> tuple[ExperimentRecord, ModelRecord]:
+    def run(self, request: StateExperimentCreate) -> tuple[ExperimentRecord, ModelRecord]:
         dataset = self.dataset_service.get(request.dataset_id)
         if dataset.dataset_type != "state_estimation":
             raise ValueError("state estimation requires a state-estimation dataset")
@@ -56,12 +54,8 @@ class StateEstimationExperimentRunner(BaseExperimentRunner):
                 random_seed=request.random_seed,
             )
             training_duration = perf_counter() - started
-            directory = self.artifact_manager.experiment_dir(
-                self.experiment_type, experiment.id
-            )
-            bus_mae = [
-                result.metrics["per_bus"][name]["mae"] for name in result.target_names
-            ]
+            directory = self.artifact_manager.experiment_dir(self.experiment_type, experiment.id)
+            bus_mae = [result.metrics["per_bus"][name]["mae"] for name in result.target_names]
             figures = {
                 "voltage_estimation.png": actual_vs_predicted(
                     result.actual.ravel(),
@@ -79,9 +73,7 @@ class StateEstimationExperimentRunner(BaseExperimentRunner):
             for filename, figure in figures.items():
                 self.artifact_manager.save_figure(directory, filename, figure)
                 plt.close(figure)
-            model_path, model_hash = self.artifact_manager.save_model(
-                directory, result.pipeline
-            )
+            model_path, model_hash = self.artifact_manager.save_model(directory, result.pipeline)
             performance: dict[str, Any] = {
                 "training_duration_seconds": training_duration,
                 "dataset_rows": len(frame),

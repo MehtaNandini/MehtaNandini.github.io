@@ -18,7 +18,5 @@ def get_model(model_id: str, service: ModelService = Depends(model_service)) -> 
 
 
 @router.post("/{model_id}/activate", response_model=ModelView)
-def activate_model(
-    model_id: str, service: ModelService = Depends(model_service)
-) -> object:
+def activate_model(model_id: str, service: ModelService = Depends(model_service)) -> object:
     return service.activate(model_id)

@@ -38,12 +38,8 @@ def upgrade() -> None:
         ),
         sa.PrimaryKeyConstraint("id"),
     )
-    op.create_index(
-        op.f("ix_datasets_dataset_type"), "datasets", ["dataset_type"], unique=False
-    )
-    op.create_index(
-        op.f("ix_datasets_file_hash"), "datasets", ["file_hash"], unique=False
-    )
+    op.create_index(op.f("ix_datasets_dataset_type"), "datasets", ["dataset_type"], unique=False)
+    op.create_index(op.f("ix_datasets_file_hash"), "datasets", ["file_hash"], unique=False)
     op.create_index(op.f("ix_datasets_name"), "datasets", ["name"], unique=False)
     op.create_index(
         "ix_datasets_type_version",
@@ -80,18 +76,14 @@ def upgrade() -> None:
         sa.ForeignKeyConstraint(["dataset_id"], ["datasets.id"], ondelete="RESTRICT"),
         sa.PrimaryKeyConstraint("id"),
     )
-    op.create_index(
-        op.f("ix_experiments_dataset_id"), "experiments", ["dataset_id"], unique=False
-    )
+    op.create_index(op.f("ix_experiments_dataset_id"), "experiments", ["dataset_id"], unique=False)
     op.create_index(
         op.f("ix_experiments_experiment_type"),
         "experiments",
         ["experiment_type"],
         unique=False,
     )
-    op.create_index(
-        op.f("ix_experiments_status"), "experiments", ["status"], unique=False
-    )
+    op.create_index(op.f("ix_experiments_status"), "experiments", ["status"], unique=False)
     op.create_table(
         "models",
         sa.Column("id", sa.String(length=36), nullable=False),
@@ -112,18 +104,12 @@ def upgrade() -> None:
             nullable=False,
         ),
         sa.Column("active", sa.Boolean(), nullable=False),
-        sa.ForeignKeyConstraint(
-            ["experiment_id"], ["experiments.id"], ondelete="CASCADE"
-        ),
+        sa.ForeignKeyConstraint(["experiment_id"], ["experiments.id"], ondelete="CASCADE"),
         sa.PrimaryKeyConstraint("id"),
     )
     op.create_index(op.f("ix_models_active"), "models", ["active"], unique=False)
-    op.create_index(
-        op.f("ix_models_experiment_id"), "models", ["experiment_id"], unique=False
-    )
-    op.create_index(
-        "ix_models_task_active", "models", ["task_type", "active"], unique=False
-    )
+    op.create_index(op.f("ix_models_experiment_id"), "models", ["experiment_id"], unique=False)
+    op.create_index("ix_models_task_active", "models", ["task_type", "active"], unique=False)
     op.create_index(op.f("ix_models_task_type"), "models", ["task_type"], unique=False)
     op.create_table(
         "inference_runs",
@@ -140,9 +126,7 @@ def upgrade() -> None:
             server_default=sa.text("(CURRENT_TIMESTAMP)"),
             nullable=False,
         ),
-        sa.ForeignKeyConstraint(
-            ["experiment_id"], ["experiments.id"], ondelete="RESTRICT"
-        ),
+        sa.ForeignKeyConstraint(["experiment_id"], ["experiments.id"], ondelete="RESTRICT"),
         sa.ForeignKeyConstraint(["model_id"], ["models.id"], ondelete="RESTRICT"),
         sa.PrimaryKeyConstraint("id"),
     )

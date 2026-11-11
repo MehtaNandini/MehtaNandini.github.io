@@ -42,9 +42,7 @@ async def request_context(request: Request, call_next: object) -> object:
     request_id = request.headers.get("x-request-id", str(uuid4()))[:100]
     content_length = int(request.headers.get("content-length", "0"))
     if content_length > settings.max_request_bytes:
-        return JSONResponse(
-            status_code=413, content={"detail": "request payload is too large"}
-        )
+        return JSONResponse(status_code=413, content={"detail": "request payload is too large"})
     started = perf_counter()
     response = await call_next(request)  # type: ignore[operator]
     response.headers["x-request-id"] = request_id

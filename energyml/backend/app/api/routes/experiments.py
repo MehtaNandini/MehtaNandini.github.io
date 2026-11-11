@@ -19,18 +19,14 @@ from app.services.experiments import ExperimentService
 router = APIRouter(prefix="/experiments", tags=["experiments"])
 
 
-@router.post(
-    "/forecasting", response_model=ExperimentView, status_code=status.HTTP_201_CREATED
-)
+@router.post("/forecasting", response_model=ExperimentView, status_code=status.HTTP_201_CREATED)
 def run_forecasting(
     request: ForecastExperimentCreate,
     session: Session = Depends(get_db),
     datasets: DatasetService = Depends(dataset_service),
     artifacts: ArtifactManager = Depends(artifact_manager),
 ) -> object:
-    experiment, _ = ForecastingExperimentRunner(session, datasets, artifacts).run(
-        request
-    )
+    experiment, _ = ForecastingExperimentRunner(session, datasets, artifacts).run(request)
     return experiment
 
 
@@ -45,9 +41,7 @@ def run_state_estimation(
     datasets: DatasetService = Depends(dataset_service),
     artifacts: ArtifactManager = Depends(artifact_manager),
 ) -> object:
-    experiment, _ = StateEstimationExperimentRunner(session, datasets, artifacts).run(
-        request
-    )
+    experiment, _ = StateEstimationExperimentRunner(session, datasets, artifacts).run(request)
     return experiment
 
 

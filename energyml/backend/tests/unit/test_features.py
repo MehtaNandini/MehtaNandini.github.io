@@ -6,9 +6,7 @@ from app.features.forecasting import chronological_split, create_forecasting_fea
 
 
 def test_lags_and_shifted_rolling_windows_do_not_leak() -> None:
-    frame = generate_renewable_dataset(
-        RenewableDatasetConfig(number_of_days=3, random_seed=1)
-    )
+    frame = generate_renewable_dataset(RenewableDatasetConfig(number_of_days=3, random_seed=1))
     frame["renewable_generation_mw"] = np.arange(len(frame), dtype=float)
     featured = create_forecasting_features(frame)
     first = featured.iloc[0]
@@ -26,6 +24,4 @@ def test_chronological_split_keeps_order() -> None:
     assert split.train["value"].tolist() == list(range(70))
     assert split.validation["value"].tolist() == list(range(70, 85))
     assert split.test["value"].tolist() == list(range(85, 100))
-    assert (
-        split.train.index.max() < split.validation.index.min() < split.test.index.min()
-    )
+    assert split.train.index.max() < split.validation.index.min() < split.test.index.min()

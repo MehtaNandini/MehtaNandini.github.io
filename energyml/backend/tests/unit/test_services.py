@@ -19,9 +19,7 @@ def test_registry_activation_and_referenced_dataset_protection(
 ) -> None:
     datasets = DatasetService(session, tmp_path / "datasets")
     artifacts = ArtifactManager(tmp_path / "artifacts")
-    dataset = datasets.generate_renewable(
-        RenewableDatasetCreate(number_of_days=35, random_seed=42)
-    )
+    dataset = datasets.generate_renewable(RenewableDatasetCreate(number_of_days=35, random_seed=42))
     experiment, model = ForecastingExperimentRunner(session, datasets, artifacts).run(
         ForecastExperimentCreate(
             dataset_id=dataset.id,
@@ -40,9 +38,7 @@ def test_failed_training_updates_experiment_status(
 ) -> None:
     datasets = DatasetService(session, tmp_path / "datasets")
     dataset = datasets.generate_renewable(RenewableDatasetCreate(number_of_days=30))
-    runner = ForecastingExperimentRunner(
-        session, datasets, ArtifactManager(tmp_path / "artifacts")
-    )
+    runner = ForecastingExperimentRunner(session, datasets, ArtifactManager(tmp_path / "artifacts"))
 
     def fail(*args: object, **kwargs: object) -> None:
         raise RuntimeError("intentional training failure")

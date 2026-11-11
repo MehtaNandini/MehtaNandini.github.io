@@ -57,9 +57,7 @@ class ExperimentService:
                     "mae": primary.get("mae"),
                     "rmse": primary.get("rmse"),
                     "r2": primary.get("r2"),
-                    "training_duration_seconds": performance.get(
-                        "training_duration_seconds"
-                    ),
+                    "training_duration_seconds": performance.get("training_duration_seconds"),
                     "artifact_version": experiment.artifact_hash,
                 }
             )

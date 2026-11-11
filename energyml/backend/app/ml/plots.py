@@ -51,9 +51,7 @@ def forecasting_timeseries(
     return figure
 
 
-def feature_importance_plot(
-    names: list[str], importances: NDArray[np.floating[Any]]
-) -> Figure:
+def feature_importance_plot(names: list[str], importances: NDArray[np.floating[Any]]) -> Figure:
     order = np.argsort(importances)[-12:]
     figure, axis = plt.subplots(figsize=(7, 5))
     axis.barh(np.asarray(names)[order], importances[order], color="#0f766e")

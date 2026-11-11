@@ -47,9 +47,7 @@ class ArtifactManager:
         if not filename.endswith(".json"):
             raise ArtifactSecurityError("JSON artifact must use a .json extension")
         path = self._child(directory, filename)
-        path.write_text(
-            json.dumps(payload, indent=2, sort_keys=True, default=str) + "\n"
-        )
+        path.write_text(json.dumps(payload, indent=2, sort_keys=True, default=str) + "\n")
         return path
 
     def save_figure(self, directory: Path, filename: str, figure: Figure) -> Path:

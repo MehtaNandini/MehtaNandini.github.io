@@ -32,9 +32,7 @@ class ForecastExperimentCreate(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
     dataset_id: str
-    name: str = Field(
-        default="Renewable generation forecast", min_length=1, max_length=160
-    )
+    name: str = Field(default="Renewable generation forecast", min_length=1, max_length=160)
     random_seed: int = Field(default=42, ge=0, le=2**32 - 1)
     model: ForecastModelConfig = Field(default_factory=ForecastModelConfig)
     split: SplitConfig = Field(default_factory=SplitConfig)

@@ -20,9 +20,7 @@ def test_regression_metrics_are_calculated() -> None:
 
 def test_forecasting_training_prediction_baseline_and_reproducibility() -> None:
     frame = create_forecasting_features(
-        generate_renewable_dataset(
-            RenewableDatasetConfig(number_of_days=60, random_seed=42)
-        )
+        generate_renewable_dataset(RenewableDatasetConfig(number_of_days=60, random_seed=42))
     )
     parameters = {"max_iter": 40, "max_depth": 5, "min_samples_leaf": 10}
     first = train_forecasting_pipeline(frame, parameters, random_seed=42)
@@ -42,9 +40,7 @@ def test_state_estimation_training_multi_output_and_per_bus_metrics() -> None:
     frame = generate_state_dataset(
         StateDatasetConfig(network_size=4, number_of_samples=350, random_seed=42)
     )
-    result = train_state_pipeline(
-        frame, {"n_estimators": 30, "max_depth": 8}, random_seed=42
-    )
+    result = train_state_pipeline(frame, {"n_estimators": 30, "max_depth": 8}, random_seed=42)
     assert result.predicted.shape[1] == 4
     assert result.predicted.shape == result.actual.shape
     assert len(result.metrics["per_bus"]) == 4

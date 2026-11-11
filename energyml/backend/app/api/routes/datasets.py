@@ -35,15 +35,11 @@ def list_datasets(service: DatasetService = Depends(dataset_service)) -> object:
 
 
 @router.get("/{dataset_id}", response_model=DatasetView)
-def get_dataset(
-    dataset_id: str, service: DatasetService = Depends(dataset_service)
-) -> object:
+def get_dataset(dataset_id: str, service: DatasetService = Depends(dataset_service)) -> object:
     return service.get(dataset_id)
 
 
 @router.delete("/{dataset_id}", status_code=status.HTTP_204_NO_CONTENT)
-def delete_dataset(
-    dataset_id: str, service: DatasetService = Depends(dataset_service)
-) -> Response:
+def delete_dataset(dataset_id: str, service: DatasetService = Depends(dataset_service)) -> Response:
     service.delete(dataset_id)
     return Response(status_code=status.HTTP_204_NO_CONTENT)

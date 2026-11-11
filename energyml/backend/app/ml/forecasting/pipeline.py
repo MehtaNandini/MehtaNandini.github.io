@@ -72,9 +72,7 @@ def train_forecasting_pipeline(
             "persistence_baseline": baseline_metrics,
             "improvement_over_baseline": {
                 "mae_percent": float(
-                    (baseline_metrics["mae"] - model_metrics["mae"])
-                    / baseline_metrics["mae"]
-                    * 100
+                    (baseline_metrics["mae"] - model_metrics["mae"]) / baseline_metrics["mae"] * 100
                 ),
                 "rmse_percent": float(
                     (baseline_metrics["rmse"] - model_metrics["rmse"])

@@ -52,9 +52,7 @@ def chronological_split(
     if not 0 < train_ratio < 1 or not 0 <= validation_ratio < 1:
         raise ValueError("split ratios must be within (0, 1)")
     if train_ratio + validation_ratio >= 1:
-        raise ValueError(
-            "train and validation ratios must leave a non-empty test split"
-        )
+        raise ValueError("train and validation ratios must leave a non-empty test split")
     train_end = int(len(frame) * train_ratio)
     validation_end = train_end + int(len(frame) * validation_ratio)
     if train_end < 1 or validation_end <= train_end or validation_end >= len(frame):

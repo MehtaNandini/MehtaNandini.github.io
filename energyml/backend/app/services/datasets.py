@@ -48,9 +48,7 @@ class DatasetService:
 
     def list(self) -> list[DatasetRecord]:
         return list(
-            self.session.scalars(
-                select(DatasetRecord).order_by(DatasetRecord.created_at.desc())
-            )
+            self.session.scalars(select(DatasetRecord).order_by(DatasetRecord.created_at.desc()))
         )
 
     def get(self, dataset_id: str) -> DatasetRecord:
@@ -73,9 +71,7 @@ class DatasetService:
     def delete(self, dataset_id: str) -> None:
         record = self.get(dataset_id)
         referenced = self.session.scalar(
-            select(ExperimentRecord.id)
-            .where(ExperimentRecord.dataset_id == dataset_id)
-            .limit(1)
+            select(ExperimentRecord.id).where(ExperimentRecord.dataset_id == dataset_id).limit(1)
         )
         if referenced:
             raise DatasetInUseError("dataset is referenced by an experiment")

@@ -105,22 +105,16 @@ def test_state_estimation_end_to_end_and_shape_validation(client: TestClient) ->
     )
     assert experiment.status_code == 201, experiment.text
     model = next(
-        item
-        for item in client.get("/api/models").json()
-        if item["task_type"] == "state_estimation"
+        item for item in client.get("/api/models").json() if item["task_type"] == "state_estimation"
     )
     assert client.post(f"/api/models/{model['id']}/activate").status_code == 200
     frame = pd.read_csv(dataset["file_path"])
     feature_names, _ = state_feature_target_columns(list(frame.columns))
     measurements = {name: float(frame.iloc[-1][name]) for name in feature_names}
-    response = client.post(
-        "/api/inference/state-estimation", json={"measurements": measurements}
-    )
+    response = client.post("/api/inference/state-estimation", json={"measurements": measurements})
     assert response.status_code == 200, response.text
     assert len(response.json()["voltages"]) == 4
     measurements.pop(feature_names[0])
-    invalid = client.post(
-        "/api/inference/state-estimation", json={"measurements": measurements}
-    )
+    invalid = client.post("/api/inference/state-estimation", json={"measurements": measurements})
     assert invalid.status_code == 400
     assert "missing" in invalid.json()["detail"]
